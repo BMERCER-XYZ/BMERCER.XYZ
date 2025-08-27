@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ASCII Home</title>
+  <title>BMERCER.XYZ</title>
   <style>
     :root {
       --bg: #0b0b10;
@@ -13,6 +13,8 @@
     html, body {
       height: 100%;
       margin: 0;
+      overflow: hidden;              /* prevent scrolling */
+      overscroll-behavior: none;     /* stop bounce on touch devices */
       background: radial-gradient(1000px 800px at 50% 30%, #12121a, var(--bg));
       color: var(--fg);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -72,8 +74,7 @@
   </div>
 
   <script>
-    // Rotating ASCII torus ("donut") adapted for JS and made responsive.
-    // No external libs. Feel free to drop this <pre> anywhere on your site.
+
 
     (function(){
       const el = document.getElementById('donut');
@@ -84,6 +85,7 @@
       // Animation state
       let A = 0, B = 0; // rotation angles
       let rafId = null;
+      let lastTime = 0;
       
 
       // Compute canvas size (characters) based on viewport
@@ -115,7 +117,18 @@
       window.addEventListener('resize', resize);
       resize();
 
-      function frame(){
+      function frame(currentTime){
+        if (lastTime === 0) lastTime = currentTime;
+        const deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
+        
+        // Time-based rotation (degrees per second)
+        const rotationSpeed = 60; // degrees per second
+        const rotationRadians = (rotationSpeed * deltaTime / 1000) * (Math.PI / 180);
+        
+        A += rotationRadians; // around X
+        B += rotationRadians * 1.15; // around Z (slightly faster)
+        
         draw();
         rafId = requestAnimationFrame(frame);
       }
@@ -330,9 +343,7 @@
         }
         el.textContent = s;
 
-        // Spin
-        A += 0.02; // around X
-        B += 0.023; // around Z
+        // Spin is now handled in frame() with time-based rotation
       }
 
       // initial font size
