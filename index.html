@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ASCII Frames Player</title>
+  <title>BMERCER.XYZ</title>
   <style>
     :root{
       color-scheme: dark;
@@ -11,20 +11,9 @@
     }
     html,body{height:100%; overflow:hidden;}
     body{margin:0;background:var(--bg);color:var(--fg);font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;display:flex;flex-direction:column;}
-    header,footer{padding:12px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--card),transparent);}
-    footer{border-top:1px solid var(--border);border-bottom:none;}
-    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .btn{appearance:none;border:1px solid var(--border);background:var(--card);color:var(--fg);padding:8px 12px;border-radius:12px;font-weight:600;cursor:pointer}
-    .btn:disabled{opacity:.5;cursor:not-allowed}
-    .btn.primary{border-color:#2b79ff;background:#2b79ff15}
-    .pill{padding:6px 10px;border:1px solid var(--border);border-radius:999px;color:var(--muted)}
-    .grow{flex:1}
     #banner{padding:60px; text-align:center; }
     .screen-wrap{flex:1; overflow:hidden; display:flex; align-items:center; justify-content:center;}
-    pre#screen{margin:0; padding:16px; white-space:pre; line-height:1.05; font-size:14px; tab-size:2; text-align:center;}
-    progress{height:10px}
-    input[type="range"]{accent-color:var(--accent)}
-    .small{font-size:12px;color:var(--muted)}
+    pre#screen{margin:0; padding:16px; white-space:pre; line-height:1.05; font-size:14px; tab-size:2; text-align:center; display:inline-block; vertical-align:middle;}
   </style>
 </head>
 <body>
@@ -76,10 +65,12 @@
     let frameIndex = 1;
     let framePosition = 1.0; // decimal position for smooth speed control
     let timer = null;
+    let lastTime = 0; // track last update time
 
     function pathFor(i){
       return `${FOLDER}/${PREFIX}${String(i).padStart(PAD,'0')}${EXT}`;
     }
+
 
     async function preload(){
       const tasks = [];
@@ -116,13 +107,23 @@
     function play(){
       if(playing) return;
       playing = true;
+      startAnimation();
+    }
+
+    function startAnimation(){
+      if(!playing) return;
       const interval = 1000 / fps;
-      // Use a drift-corrected timer
       let expected = performance.now() + interval;
+      
       function tick(){
-        if(!playing) return;
-        const dt = performance.now() - expected;
-        if(dt >= 0){ step(); expected += interval; }
+        if(!playing || document.hidden) return;
+        
+        const now = performance.now();
+        const dt = now - expected;
+        if(dt >= 0){ 
+          step(); 
+          expected += interval; 
+        }
         timer = setTimeout(tick, Math.max(0, interval - dt));
       }
       tick();
@@ -132,6 +133,20 @@
       playing = false;
       if(timer) clearTimeout(timer);
     }
+
+    // Handle tab visibility changes
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        // Tab became hidden - stop the animation completely
+        if(timer) {
+          clearTimeout(timer);
+          timer = null;
+        }
+      } else if (playing) {
+        // Tab became visible again - restart animation cleanly
+        startAnimation();
+      }
+    });
 
     // start
     preload();
