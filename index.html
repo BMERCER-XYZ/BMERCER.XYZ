@@ -3,360 +3,138 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BMERCER.XYZ</title>
+  <title>ASCII Frames Player</title>
   <style>
-    :root {
-      --bg: #0b0b10;
-      --fg: #e8e8f0;
-      --accent: #8aa4ff;
+    :root{
+      color-scheme: dark;
+      --bg:#0b0b10;--fg:#eaeaea;--muted:#8a8f98;--accent:#68c1ff;--card:#141518;--border:#26282d;
     }
-    html, body {
-      height: 100%;
-      margin: 0;
-      overflow: hidden;              /* prevent scrolling */
-      overscroll-behavior: none;     /* stop bounce on touch devices */
-      background: radial-gradient(1000px 800px at 50% 30%, #12121a, var(--bg));
-      color: var(--fg);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-    .wrap {
-      height: 100%;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      align-items: center;
-      justify-items: center;
-      gap: 12px;
-      padding: 24px;
-    }
-    header {
-      letter-spacing: 0.08em;
-      font-size: clamp(12px, 2vw, 14px);
-      text-transform: uppercase;
-      opacity: 0.75;
-      user-select: none;
-    }
-    pre {
-      margin: 0;
-      line-height: 1;
-      filter: drop-shadow(0 10px 30px rgba(0,0,0,.6));
-      user-select: none;
-    }
-    footer {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      opacity: .7;
-      font-size: 12px;
-      user-select: none;
-    }
-    .pill {
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 999px;
-      padding: 6px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,.02);
-      backdrop-filter: blur(6px);
-    }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
-    .btn { cursor: pointer; transition: opacity .2s ease; }
-    .btn:hover { opacity: .9; }
-    a { color: inherit; text-decoration: none; }
+    html,body{height:100%; overflow:hidden;}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;display:flex;flex-direction:column;}
+    header,footer{padding:12px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--card),transparent);}
+    footer{border-top:1px solid var(--border);border-bottom:none;}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .btn{appearance:none;border:1px solid var(--border);background:var(--card);color:var(--fg);padding:8px 12px;border-radius:12px;font-weight:600;cursor:pointer}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .btn.primary{border-color:#2b79ff;background:#2b79ff15}
+    .pill{padding:6px 10px;border:1px solid var(--border);border-radius:999px;color:var(--muted)}
+    .grow{flex:1}
+    #banner{padding:60px; text-align:center; }
+    .screen-wrap{flex:1; overflow:hidden; display:flex; align-items:center; justify-content:center;}
+    pre#screen{margin:0; padding:16px; white-space:pre; line-height:1.05; font-size:14px; tab-size:2; text-align:center;}
+    progress{height:10px}
+    input[type="range"]{accent-color:var(--accent)}
+    .small{font-size:12px;color:var(--muted)}
   </style>
 </head>
 <body>
-  <div class="wrap">
-   
 
-    <pre id="donut" aria-label="Animated ASCII donut" role="img"></pre>
+
+  <div id="banner">
+    __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\____________/\\\\\\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\____________/\\\_______/\\\__/\\\________/\\\__/\\\\\\\\\\\\\\\_        
+ _\/\\\/////////\\\_\/\\\\\\________/\\\\\\_\/\\\///////////___/\\\///////\\\_______/\\\////////__\/\\\///////////___/\\\///////\\\_________\///\\\___/\\\/__\///\\\____/\\\/__\////////////\\\__       
+  _\/\\\_______\/\\\_\/\\\//\\\____/\\\//\\\_\/\\\_____________\/\\\_____\/\\\_____/\\\/___________\/\\\_____________\/\\\_____\/\\\___________\///\\\\\\/______\///\\\/\\\/______________/\\\/___      
+   _\/\\\\\\\\\\\\\\__\/\\\\///\\\/\\\/_\/\\\_\/\\\\\\\\\\\_____\/\\\\\\\\\\\/_____/\\\_____________\/\\\\\\\\\\\_____\/\\\\\\\\\\\/______________\//\\\\__________\///\\\/______________/\\\/_____     
+    _\/\\\/////////\\\_\/\\\__\///\\\/___\/\\\_\/\\\///////______\/\\\//////\\\____\/\\\_____________\/\\\///////______\/\\\//////\\\_______________\/\\\\____________\/\\\_____________/\\\/_______    
+     _\/\\\_______\/\\\_\/\\\____\///_____\/\\\_\/\\\_____________\/\\\____\//\\\___\//\\\____________\/\\\_____________\/\\\____\//\\\______________/\\\\\\___________\/\\\___________/\\\/_________   
+      _\/\\\_______\/\\\_\/\\\_____________\/\\\_\/\\\_____________\/\\\_____\//\\\___\///\\\__________\/\\\_____________\/\\\_____\//\\\___________/\\\////\\\_________\/\\\_________/\\\/___________  
+       _\/\\\\\\\\\\\\\/__\/\\\_____________\/\\\_\/\\\\\\\\\\\\\\\_\/\\\______\//\\\____\////\\\\\\\\\_\/\\\\\\\\\\\\\\\_\/\\\______\//\\\__/\\\__/\\\/___\///\\\_______\/\\\________/\\\\\\\\\\\\\\\_ 
+        _\/////////////____\///______________\///__\///////////////__\///________\///________\/////////__\///////////////__\///________\///__\///__\///_______\///________\///________\///////////////__
 
   </div>
+  
+  <div class="screen-wrap">
+    <pre id="screen">Loading ASCII frames…</pre>
+  </div>
+
+
 
   <script>
+    // ==== CONFIG ====
+    const TOTAL_FRAMES = 300;        // number of frames to play
+    const FPS = 60;                  // target frames per second
+    const SPEED = 0.5;               // animation speed multiplier (1.0 = normal, 0.5 = half speed, 2.0 = double speed)
+    const FOLDER = 'ACII-Frames';    // folder containing the .txt files
+    const PREFIX = '';         // filename prefix: frame_0001.txt
+    const PAD = 4;                   // zero-padding digits
+    const EXT = '.txt';              // file extension for frames
 
+    // allow overriding via URL, e.g. ?fps=12
+    const params = new URLSearchParams(location.search);
+    const fps = Number(params.get('fps') || FPS);
 
-    (function(){
-      const el = document.getElementById('donut');
+    // DOM refs
+    const screenEl = document.getElementById('screen');
 
-      // Characters from dimmest to brightest.
-      const shades = " .,-~:;=!*#$@"; // 13
+    // Set font size to 8
+    screenEl.style.fontSize = '8px';
 
-      // Animation state
-      let A = 0, B = 0; // rotation angles
-      let rafId = null;
-      let lastTime = 0;
+    // state
+    let frames = new Array(TOTAL_FRAMES + 1); // 1-indexed for simplicity
+    let loaded = 0;
+    let playing = false;
+    let frameIndex = 1;
+    let framePosition = 1.0; // decimal position for smooth speed control
+    let timer = null;
+
+    function pathFor(i){
+      return `${FOLDER}/${PREFIX}${String(i).padStart(PAD,'0')}${EXT}`;
+    }
+
+    async function preload(){
+      const tasks = [];
+      for(let i=1;i<=TOTAL_FRAMES;i++){
+        tasks.push(
+          fetch(pathFor(i))
+            .then(r=>{ if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
+            .then(txt=>{ frames[i] = txt; loaded++; })
+            .catch(err=>{ frames[i] = `⚠ Failed to load ${pathFor(i)}\n${err}`; loaded++; })
+        );
+      }
+      await Promise.all(tasks);
+      screenEl.textContent = frames[1] || '(empty)';
+      framePosition = 1.0;
+      play();
+    }
+
+    function show(i){
+      frameIndex = Math.floor(i);
+      framePosition = i;
+      screenEl.textContent = frames[frameIndex] || '';
+    }
+
+    function step(){
+      const speed = 0.5; // Fixed speed at 0.5
+      let next = framePosition + speed;
       
-
-      // Compute canvas size (characters) based on viewport
-      function computeSize(){
-        // target ~70-110 columns on desktops, scale down on mobile
-        const w = Math.max(320, Math.min(window.innerWidth, 1400));
-        const h = Math.max(340, Math.min(window.innerHeight - 40, 900));
-        // Character cells are ~0.6 aspect (monospace). Tune to taste.
-        const cols = Math.floor(w / 9); // wider cells
-        const rows = Math.floor(h / 18); // taller lines
-        return {cols: Math.max(40, cols), rows: Math.max(24, rows)};
+      if(next > TOTAL_FRAMES){
+        next = 1; // Always loop
       }
+      show(next);
+    }
 
-      let {cols, rows} = computeSize();
-      let zbuf = new Float32Array(cols * rows);
-      let output = new Array(cols * rows).fill(' ');
-
-      function resize(){
-        const s = computeSize();
-        if (s.cols === cols && s.rows === rows) return;
-        cols = s.cols; rows = s.rows;
-        zbuf = new Float32Array(cols * rows);
-        output = new Array(cols * rows).fill(' ');
-        // update font size to fill viewport nicely
-        const px = Math.floor(Math.min(window.innerWidth / cols * 0.92, window.innerHeight / rows * 0.92));
-        el.style.fontSize = Math.max(8, Math.min(48, px)) + 'px';
+    function play(){
+      if(playing) return;
+      playing = true;
+      const interval = 1000 / fps;
+      // Use a drift-corrected timer
+      let expected = performance.now() + interval;
+      function tick(){
+        if(!playing) return;
+        const dt = performance.now() - expected;
+        if(dt >= 0){ step(); expected += interval; }
+        timer = setTimeout(tick, Math.max(0, interval - dt));
       }
+      tick();
+    }
 
-      window.addEventListener('resize', resize);
-      resize();
+    function pause(){
+      playing = false;
+      if(timer) clearTimeout(timer);
+    }
 
-      function frame(currentTime){
-        if (lastTime === 0) lastTime = currentTime;
-        const deltaTime = currentTime - lastTime;
-        lastTime = currentTime;
-        
-        // Time-based rotation (degrees per second)
-        const rotationSpeed = 60; // degrees per second
-        const rotationRadians = (rotationSpeed * deltaTime / 1000) * (Math.PI / 180);
-        
-        A += rotationRadians; // around X
-        B += rotationRadians * 1.15; // around Z (slightly faster)
-        
-        draw();
-        rafId = requestAnimationFrame(frame);
-      }
-
-      // -------- Minimal ASCII/Binary STL loader + centroid renderer --------
-      const SAMPLE_STL_URL = 'models/model.stl';
-      function getSTLUrl(){
-        const params = new URLSearchParams(location.search);
-        const name = params.get('stl') || 'model.stl';
-        return `models/${name}`;
-      }
-
-      /** @typedef {{x:number,y:number,z:number}} Vec3 */
-
-      /** Compute face normal from three points (unnormalized) */
-      function computeFaceNormal(a, b, c){
-        const ux = b.x - a.x, uy = b.y - a.y, uz = b.z - a.z;
-        const vx = c.x - a.x, vy = c.y - a.y, vz = c.z - a.z;
-        const nx = uy * vz - uz * vy;
-        const ny = uz * vx - ux * vz;
-        const nz = ux * vy - uy * vx;
-        const len = Math.hypot(nx, ny, nz) || 1;
-        return {x: nx/len, y: ny/len, z: nz/len};
-      }
-
-      /** Parse ASCII STL text into array of triangle centroids and normals */
-      function parseAsciiSTL(stlText){
-        const lines = stlText.split(/\r?\n/);
-        /** @type {Vec3[]} */
-        const centroids = [];
-        /** @type {Vec3[]} */
-        const normals = [];
-        let currentVertices = [];
-        let statedNormal = null;
-
-        for (let i = 0; i < lines.length; i++){
-          const line = lines[i].trim();
-          if (!line) continue;
-          if (line.startsWith('facet normal')){
-            const parts = line.split(/\s+/);
-            // facet normal nx ny nz
-            if (parts.length >= 5){
-              statedNormal = {
-                x: parseFloat(parts[2]),
-                y: parseFloat(parts[3]),
-                z: parseFloat(parts[4])
-              };
-              const len = Math.hypot(statedNormal.x, statedNormal.y, statedNormal.z) || 1;
-              statedNormal.x /= len; statedNormal.y /= len; statedNormal.z /= len;
-            } else {
-              statedNormal = null;
-            }
-            currentVertices = [];
-          } else if (line.startsWith('vertex')){
-            const parts = line.split(/\s+/);
-            if (parts.length >= 4){
-              currentVertices.push({
-                x: parseFloat(parts[1]),
-                y: parseFloat(parts[2]),
-                z: parseFloat(parts[3])
-              });
-            }
-          } else if (line.startsWith('endfacet')){
-            if (currentVertices.length === 3){
-              const a = currentVertices[0], b = currentVertices[1], c = currentVertices[2];
-              const cx = (a.x + b.x + c.x) / 3;
-              const cy = (a.y + b.y + c.y) / 3;
-              const cz = (a.z + b.z + c.z) / 3;
-              centroids.push({x: cx, y: cy, z: cz});
-              const n = statedNormal || computeFaceNormal(a, b, c);
-              normals.push(n);
-            }
-            currentVertices = [];
-            statedNormal = null;
-          }
-        }
-        return {centroids, normals};
-      }
-
-      /** Parse Binary STL (ArrayBuffer) into triangle centroids and normals */
-      function parseBinarySTL(buf){
-        const dv = new DataView(buf);
-        if (dv.byteLength < 84) return {centroids: [], normals: []};
-        const triCount = dv.getUint32(80, true);
-        const centroids = new Array(triCount);
-        const normals = new Array(triCount);
-        let offset = 84;
-        for (let i = 0; i < triCount; i++){
-          if (offset + 50 > dv.byteLength) break;
-          const nx = dv.getFloat32(offset + 0, true);
-          const ny = dv.getFloat32(offset + 4, true);
-          const nz = dv.getFloat32(offset + 8, true);
-          const ax = dv.getFloat32(offset + 12, true);
-          const ay = dv.getFloat32(offset + 16, true);
-          const az = dv.getFloat32(offset + 20, true);
-          const bx = dv.getFloat32(offset + 24, true);
-          const by = dv.getFloat32(offset + 28, true);
-          const bz = dv.getFloat32(offset + 32, true);
-          const cx = dv.getFloat32(offset + 36, true);
-          const cy = dv.getFloat32(offset + 40, true);
-          const cz = dv.getFloat32(offset + 44, true);
-          offset += 50; // skip attribute
-          centroids[i] = {x:(ax+bx+cx)/3, y:(ay+by+cy)/3, z:(az+bz+cz)/3};
-          const nlen = Math.hypot(nx, ny, nz) || 1;
-          normals[i] = {x: nx/nlen, y: ny/nlen, z: nz/nlen};
-        }
-        return {centroids: centroids.filter(Boolean), normals: normals.filter(Boolean)};
-      }
-
-      /** Center and uniformly scale points to target radius */
-      function normalizeModel(points, targetRadius){
-        let cx = 0, cy = 0, cz = 0;
-        for (const p of points){ cx += p.x; cy += p.y; cz += p.z; }
-        const invN = points.length ? 1 / points.length : 1;
-        cx *= invN; cy *= invN; cz *= invN;
-        let maxR = 1e-6;
-        for (const p of points){
-          const x = p.x - cx, y = p.y - cy, z = p.z - cz;
-          const r = Math.hypot(x, y, z);
-          if (r > maxR) maxR = r;
-        }
-        const scale = targetRadius / maxR;
-        for (const p of points){ p.x = (p.x - cx) * scale; p.y = (p.y - cy) * scale; p.z = (p.z - cz) * scale; }
-      }
-
-      // Model buffers (precomputed centroids and normals)
-      /** @type {Vec3[]} */
-      let modelPoints = [];
-      /** @type {Vec3[]} */
-      let modelNormals = [];
-      let modelReady = false;
-
-      async function loadSTL(url){
-        try {
-          const res = await fetch(url);
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const buf = await res.arrayBuffer();
-          // Try binary first, then ASCII
-          let parsed = parseBinarySTL(buf);
-          if (!parsed.centroids.length){
-            const text = new TextDecoder('utf-8').decode(new Uint8Array(buf));
-            parsed = parseAsciiSTL(text);
-          }
-          if (!parsed.centroids.length) throw new Error('Unrecognized STL format');
-          normalizeModel(parsed.centroids, 2.6);
-          modelPoints = parsed.centroids;
-          modelNormals = parsed.normals;
-          modelReady = true;
-        } catch (e){
-          console.warn('Failed to load STL from', url, e);
-        }
-      }
-
-      function draw(){
-        // Clear buffers
-        output.fill(' ');
-        zbuf.fill(0);
-
-        const K2 = 5;            // distance from viewer
-        const K1 = cols * K2 * 1.2 / (rows); // FOV-ish constant
-
-        const cosA = Math.cos(A), sinA = Math.sin(A);
-        const cosB = Math.cos(B), sinB = Math.sin(B);
-
-        if (modelReady){
-          // Light direction in camera space
-          const lx = 0.3, ly = 0.7, lz = -0.6;
-          const linv = 1 / Math.hypot(lx, ly, lz);
-          const ldx = lx*linv, ldy = ly*linv, ldz = lz*linv;
-
-          for (let i = 0; i < modelPoints.length; i++){
-            const p = modelPoints[i];
-            const n = modelNormals[i];
-
-            // Rotate around X (A) then Z (B) for point
-            const yA = p.y * cosA - p.z * sinA;
-            const zA = p.y * sinA + p.z * cosA;
-            const xA = p.x;
-            const xB = xA * cosB - yA * sinB;
-            const yB = xA * sinB + yA * cosB;
-            const zB = zA;
-
-            // Rotate normal similarly
-            const nyA = n.y * cosA - n.z * sinA;
-            const nzA = n.y * sinA + n.z * cosA;
-            const nxA = n.x;
-            const nxB = nxA * cosB - nyA * sinB;
-            const nyB = nxA * sinB + nyA * cosB;
-            const nzB = nzA;
-
-            const z = K2 + zB;
-            const invz = 1 / z;
-            const xp = Math.floor(cols/2 + K1 * invz * xB);
-            const yp = Math.floor(rows/2 - K1 * invz * yB);
-            if (yp < 0 || yp >= rows || xp < 0 || xp >= cols) continue;
-
-            const L = Math.max(-1, Math.min(1, nxB*ldx + nyB*ldy + nzB*ldz));
-            const idx = xp + yp * cols;
-            if (invz > zbuf[idx]){
-              zbuf[idx] = invz;
-              const shadeIndex = Math.max(0, Math.min(shades.length-1, (L*0.5 + 0.5) * (shades.length-1) | 0));
-              output[idx] = shades[shadeIndex];
-            }
-          }
-        }
-
-        // Write frame
-        let s = '';
-        for (let i = 0; i < output.length; i++){
-          s += output[i];
-          if ((i+1) % cols === 0) s += "\n";
-        }
-        el.textContent = s;
-
-        // Spin is now handled in frame() with time-based rotation
-      }
-
-      // initial font size
-      const px = Math.floor(Math.min(window.innerWidth / cols * 0.92, window.innerHeight / rows * 0.92));
-      el.style.fontSize = Math.max(8, Math.min(48, px)) + 'px';
-
-      // Load local models/model.stl or ?stl=...
-      loadSTL(getSTLUrl()).then(() => {
-        rafId = requestAnimationFrame(frame);
-      });
-    })();
+    // start
+    preload();
   </script>
 </body>
 </html>
-
-
