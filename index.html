@@ -13,7 +13,28 @@
     body{margin:0;background:var(--bg);color:var(--fg);font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;display:flex;flex-direction:column;}
     #banner{padding:60px; text-align:center; }
     .screen-wrap{flex:1; overflow:hidden; display:flex; align-items:center; justify-content:center;}
-    pre#screen{margin:0; padding:16px; white-space:pre; line-height:1.05; font-size:14px; tab-size:2; text-align:center; display:inline-block; vertical-align:middle;}
+    pre#screen{margin:0; padding:16px; white-space:pre; line-height:1.05; font-size:8px; tab-size:2; text-align:center; display:inline-block; vertical-align:middle;}
+    
+    /* Responsive font scaling for smaller screens */
+    @media (max-width: 1920px) {
+      pre#screen { font-size: 5px; }
+      #banner { display: none; }
+    }
+    @media (max-width: 1200px) {
+      pre#screen { font-size: 3px; }
+    }
+    @media (max-width: 1000px) {
+      pre#screen { font-size: 3px; }
+    }
+    @media (max-width: 800px) {
+      pre#screen { font-size: 3px; }
+    }
+    @media (max-width: 600px) {
+      pre#screen { font-size: 3px; }
+    }
+    @media (max-width: 400px) {
+      pre#screen { font-size: 3px; }
+    }
   </style>
 </head>
 <body>
@@ -55,8 +76,7 @@
     // DOM refs
     const screenEl = document.getElementById('screen');
 
-    // Set font size to 8
-    screenEl.style.fontSize = '8px';
+    // Font size is now handled by CSS media queries for responsiveness
 
     // state
     let frames = new Array(TOTAL_FRAMES + 1); // 1-indexed for simplicity
