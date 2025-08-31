@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Socials - BMERCER.XYZ</title>
+  <style>
+    :root{
+      color-scheme: dark;
+      --bg:#0b0b10;--fg:#eaeaea;--muted:#8a8f98;--accent:#68c1ff;--card:#141518;--border:#26282d;
+    }
+    html,body{height:100%; margin:0; background:var(--bg); color:var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;}
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .header h1 {
+      font-size: 3rem;
+      margin: 0 0 20px 0;
+      color: var(--accent);
+    }
+    
+    .header p {
+      font-size: 1.2rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-bottom: 40px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+    
+    .back-link:hover {
+      color: var(--fg);
+    }
+    
+    .socials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .social-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .social-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+    }
+    
+    .social-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+    
+    .social-card h3 {
+      color: var(--fg);
+      margin: 0 0 10px 0;
+      font-size: 1.5rem;
+    }
+    
+    .social-card p {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+    
+    .social-card .handle {
+      color: var(--accent);
+      font-weight: 500;
+      margin-top: 10px;
+    }
+    
+    .contact-section {
+      margin-top: 80px;
+      text-align: center;
+      padding: 40px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    
+    .contact-section h2 {
+      color: var(--accent);
+      margin: 0 0 20px 0;
+      font-size: 2rem;
+    }
+    
+    .contact-section p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      margin: 0 0 30px 0;
+    }
+    
+    .email-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .email-link:hover {
+      color: var(--fg);
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .container {
+        padding: 20px 15px;
+      }
+      
+      .socials-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .social-icon {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back-link">← Back to Home</a>
+    
+    <div class="header">
+      <h1>Socials</h1>
+      <p>Connect with me across the web</p>
+    </div>
+    
+    <div class="socials-grid">
+      <a href="https://github.com/yourusername" class="social-card" target="_blank" rel="noopener noreferrer">
+        <div class="social-icon">⚡</div>
+        <h3>GitHub</h3>
+        <p>My code repositories and open source contributions</p>
+        <div class="handle">@yourusername</div>
+      </a>
+      
+      <a href="https://twitter.com/yourusername" class="social-card" target="_blank" rel="noopener noreferrer">
+        <div class="social-icon">🐦</div>
+        <h3>Twitter</h3>
+        <p>Thoughts on tech, development, and random musings</p>
+        <div class="handle">@yourusername</div>
+      </a>
+      
+      <a href="https://linkedin.com/in/yourusername" class="social-card" target="_blank" rel="noopener noreferrer">
+        <div class="social-icon">💼</div>
+        <h3>LinkedIn</h3>
+        <p>Professional network and career updates</p>
+        <div class="handle">Your Name</div>
+      </a>
+      
+      <a href="https://instagram.com/yourusername" class="social-card" target="_blank" rel="noopener noreferrer">
+        <div class="social-icon">📸</div>
+        <h3>Instagram</h3>
+        <p>Visual snippets of life and creative projects</p>
+        <div class="handle">@yourusername</div>
+      </a>
+      
+      <a href="https://youtube.com/@yourusername" class="social-card" target="_blank" rel="noopener noreferrer">
+        <div class="social-icon">📺</div>
+        <h3>YouTube</h3>
+        <p>Tutorials, demos, and tech content</p>
+        <div class="handle">@yourusername</div>
+      </a>
+      
+      <a href="https://discord.gg/yourinvite" class="social-card" target="_blank" rel="noopener noreferrer">
+        <div class="social-icon">💬</div>
+        <h3>Discord</h3>
+        <p>Community server for discussions and collaboration</p>
+        <div class="handle">Join Server</div>
+      </a>
+    </div>
+    
+    <div class="contact-section">
+      <h2>Get in Touch</h2>
+      <p>Have a project in mind or just want to chat?</p>
+      <a href="mailto:your.email@example.com" class="email-link">your.email@example.com</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projects - BMERCER.XYZ</title>
+  <style>
+    :root{
+      color-scheme: dark;
+      --bg:#0b0b10;--fg:#eaeaea;--muted:#8a8f98;--accent:#68c1ff;--card:#141518;--border:#26282d;
+    }
+    html,body{height:100%; margin:0; background:var(--bg); color:var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;}
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .header h1 {
+      font-size: 3rem;
+      margin: 0 0 20px 0;
+      color: var(--accent);
+    }
+    
+    .header p {
+      font-size: 1.2rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-bottom: 40px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+    
+    .back-link:hover {
+      color: var(--fg);
+    }
+    
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      transition: all 0.3s ease;
+    }
+    
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+    }
+    
+    .project-card h3 {
+      color: var(--accent);
+      margin: 0 0 15px 0;
+      font-size: 1.5rem;
+    }
+    
+    .project-card p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 20px 0;
+    }
+    
+    .project-links {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .project-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+    
+    .project-link:hover {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+    
+    .coming-soon {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .container {
+        padding: 20px 15px;
+      }
+      
+      .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back-link">← Back to Home</a>
+    
+    <div class="header">
+      <h1>Projects</h1>
+      <p>A collection of my work and experiments</p>
+    </div>
+    
+    <div class="projects-grid">
+      <div class="project-card">
+        <h3>Project One</h3>
+        <p>Description of your first project. This could be a web application, tool, or any other creative work you've built.</p>
+        <div class="project-links">
+          <a href="#" class="project-link">Live Demo</a>
+          <a href="#" class="project-link">GitHub</a>
+        </div>
+      </div>
+      
+      <div class="project-card">
+        <h3>Project Two</h3>
+        <p>Another project description. Maybe this one is still in development or has different features to highlight.</p>
+        <div class="project-links">
+          <a href="#" class="project-link">Live Demo</a>
+          <a href="#" class="project-link">GitHub</a>
+        </div>
+      </div>
+      
+      <div class="project-card">
+        <h3>Project Three</h3>
+        <p>Your third project could be something experimental or a different type of work entirely.</p>
+        <div class="project-links">
+          <a href="#" class="project-link">Live Demo</a>
+          <a href="#" class="project-link">GitHub</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="coming-soon">
+      <p>More projects coming soon...</p>
+    </div>
+  </div>
+</body>
+</html>

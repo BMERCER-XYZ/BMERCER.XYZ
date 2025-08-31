@@ -12,7 +12,47 @@
     html,body{height:100%; overflow:hidden;}
     body{margin:0;background:var(--bg);color:var(--fg);font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;display:flex;flex-direction:column;}
     #banner{padding:60px; text-align:center; }
-    .screen-wrap{flex:1; overflow:hidden; display:flex; align-items:center; justify-content:center;}
+    .screen-wrap{flex:1; overflow:hidden; display:flex; align-items:center; justify-content:center; position: relative;}
+    
+    .nav-buttons {
+      position: absolute;
+      top: 20%;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 1100px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    
+    .nav-button {
+      background: var(--card);
+      border: 2px solid var(--border);
+      color: var(--fg);
+      padding: 12px 50px;
+      border-radius: 8px;
+      font-family: system-ui;
+      font-size: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      pointer-events: auto;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+    
+    .nav-button:hover {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    
+    .nav-button:active {
+      transform: translateY(0);
+    }
     pre#screen{margin:0; padding:16px; white-space:pre; line-height:1.05; font-size:8px; tab-size:2; text-align:center; display:inline-block; vertical-align:middle;}
     
     /* Responsive font scaling for smaller screens */
@@ -31,12 +71,80 @@
     }
     @media (max-width: 800px) {
       pre#screen { font-size: 1.5px; }
+      #banner { 
+        display: block;
+        padding: 10px 5px;
+        font-size: 2.5px;
+        line-height: 0.7;
+        overflow: hidden;
+        max-height: 50px;
+      }
     }
     @media (max-width: 600px) {
       pre#screen { font-size: 1.5px; }
     }
     @media (max-width: 400px) {
       pre#screen { font-size: 1.5px; }
+    }
+    
+    /* Responsive button styling */
+    @media (max-width: 800px) {
+      html, body {
+        display: grid;
+        grid-template-rows: 1fr 2fr 1fr;
+        height: 100vh;
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        touch-action: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      #banner {
+        grid-row: 1;
+      }
+      .screen-wrap {
+        grid-row: 2;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        position: relative;
+        bottom: 100px;
+      }
+      pre#screen {
+        margin: 0;
+      }
+      .nav-buttons {
+        grid-row: 3;
+        position: static;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0px;
+        padding: 10px 20px;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+      }
+      .nav-button {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .nav-button {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+      .nav-buttons {
+        gap: 100px;
+      }
+    }
+    
+    @media (max-width: 400px) {
+      .nav-buttons {
+        gap: 50px;
+      }
     }
   </style>
 </head>
@@ -58,6 +166,10 @@
   
   <div class="screen-wrap">
     <pre id="screen">Loading ASCII frames…</pre>
+    <div class="nav-buttons">
+      <a href="/projects" class="nav-button">Projects</a>
+      <a href="/socials" class="nav-button">Socials</a>
+    </div>
   </div>
 
 
