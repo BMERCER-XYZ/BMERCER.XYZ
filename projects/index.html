@@ -174,6 +174,13 @@
       color: var(--accent);
     }
     
+    /* Remove underline from all text inside project-link-card */
+    .project-link-card,
+    .project-link-card * {
+      text-decoration: none !important;
+      color: inherit;
+    }
+    
     @media (max-width: 768px) {
       .header h1 {
         font-size: 2rem;
@@ -200,7 +207,7 @@
     
     <div class="header">
       <h1>PROJECTS</h1>
-      <p>// Collection of digital experiments and code</p>
+      <p>// Some of my past and current projects</p>
     </div>
     
     <div class="projects-list">
@@ -224,43 +231,42 @@
         </div>
       </div>
       
-      <div class="project-item">
+      <a href="/Projects/EnergyTracker/index.html" class="project-item project-link-card">
         <div class="project-header">
-          <h3 class="project-title">Terminal Portfolio</h3>
-          <span class="project-status">Beta</span>
+          <h3 class="project-title">Simple Energy Tracker</h3>
+          <span class="project-status active">Active</span>
         </div>
         <p class="project-description">
-          Interactive command-line interface portfolio with custom commands, 
-          file system simulation, and retro terminal aesthetics.
+          IOS & WatchOS app to monitor and log caloric intake and energy expenditure. 
+          Syncs with HealthKit and provides daily/weekly insights.
         </p>
         <div class="project-tech">
-          <span class="tech-tag">React</span>
-          <span class="tech-tag">Node.js</span>
-          <span class="tech-tag">WebSocket</span>
+          <span class="tech-tag">IOS</span>
+          <span class="tech-tag">WatchOS</span>
+          <span class="tech-tag">Swift</span>
         </div>
         <div class="project-links">
-          <a href="#" class="project-link">Demo</a>
-          <a href="#" class="project-link">GitHub</a>
+          <span class="project-link">AppStore</span>
         </div>
-      </div>
+      </a>
       
       <div class="project-item">
         <div class="project-header">
-          <h3 class="project-title">Crypto Tracker</h3>
-          <span class="project-status">Active</span>
+          <h3 class="project-title">PNG To ASCII Generator</h3>
+          <span class="project-status">Beta</span>
         </div>
         <p class="project-description">
-          Real-time cryptocurrency price monitoring with ASCII charts, 
-          alerts, and terminal-based interface for power users.
+          Convert PNG images to ASCII art with customizable settings and output options.
+          With image preview hosted on GitHub Pages.
         </p>
         <div class="project-tech">
           <span class="tech-tag">Python</span>
-          <span class="tech-tag">API</span>
-          <span class="tech-tag">CLI</span>
+          <span class="tech-tag">HTML</span>
+          <span class="tech-tag">CSS</span>
         </div>
         <div class="project-links">
-          <a href="#" class="project-link">Download</a>
-          <a href="#" class="project-link">Docs</a>
+          <a href="https://github.com/BenDHS/ASCII_Generator" class="project-link">Code</a>
+          <a href="https://bendhs.github.io/ASCII_Generator/" class="project-link">Webpage</a>
         </div>
       </div>
     </div>
