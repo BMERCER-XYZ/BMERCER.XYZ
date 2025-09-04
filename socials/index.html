@@ -7,7 +7,7 @@
   <style>
     :root{
       color-scheme: dark;
-      --bg:#0b0b10;--fg:#eaeaea;--muted:#8a8f98;--accent:#bd64f8;--card:#141518;--border:#26282d;
+      --bg:#0b0b10;--fg:#eaeaea;--muted:#8a8f98;--accent:#ffffff;--card:#141518;--border:#26282d;
     }
     html,body{height:100%; margin:0; background:var(--bg); color:var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; overflow-x: hidden;}
     
@@ -121,6 +121,7 @@
       text-transform: uppercase;
     }
     
+
     .contact-section {
       border-top: 1px solid var(--border);
       padding-top: 30px;
@@ -132,6 +133,14 @@
       margin: 0 0 15px 0;
       font-size: 1.8rem;
       text-shadow: 0 0 10px var(--accent);
+    }
+
+        .dashes {
+      text-align: center;
+      margin: 40px 0;
+      color: var(--muted);
+      font-size: 1.2rem;
+      user-select: none;
     }
     
     .contact-section p {
@@ -159,10 +168,7 @@
       box-shadow: 0 0 15px var(--accent);
     }
     
-    .contact-section::before {
-      content: "// ";
-      color: var(--accent);
-    }
+
     
     @media (max-width: 768px) {
       .header h1 {
@@ -190,87 +196,70 @@
     
     <div class="header">
       <h1>SOCIALS</h1>
-      <p>// Connect across the digital realm</p>
+      <p>// Where else to find me and my work</p>
     </div>
     
     <div class="socials-list">
-      <a href="https://github.com/yourusername" class="social-item" target="_blank" rel="noopener noreferrer">
+
+      <a href="https://github.com/BenDHS" class="social-item" target="_blank" rel="noopener noreferrer">
         <div class="social-header">
           <h3 class="social-title">GitHub</h3>
-          <span class="social-icon">⚡</span>
+          <span class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+          <path d="M160-240v-480 520-40Zm0 80q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v200h-80v-200H447l-80-80H160v480h200v80H160ZM584-56 440-200l144-144 56 57-87 87 87 87-56 57Zm192 0-56-57 87-87-87-87 56-57 144 144L776-56Z"/></svg>
+        </span>
         </div>
         <p class="social-description">
-          Code repositories, open source contributions, and development projects. 
-          Where the magic happens behind the scenes.
+          Check out the code for this site and my other projects.
         </p>
-        <div class="social-handle">@yourusername</div>
+        <div class="social-handle">@BENDHS</div>
       </a>
       
-      <a href="https://twitter.com/yourusername" class="social-item" target="_blank" rel="noopener noreferrer">
+      <a href="https://twitter.com/@mt_benno" class="social-item" target="_blank" rel="noopener noreferrer">
         <div class="social-header">
-          <h3 class="social-title">Twitter</h3>
-          <span class="social-icon">🐦</span>
+          <h3 class="social-title">Twitter/ X</h3>
+          <span class="social-icon"><svg width="24" height="24" viewBox="0 0 1200 1227" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z" fill="white"/>
+          </svg>
+          </span>
         </div>
-        <p class="social-description">
-          Tech thoughts, development insights, and random musings. 
-          Real-time updates from the terminal.
-        </p>
-        <div class="social-handle">@yourusername</div>
+        <div class="social-handle">@mt_benno</div>
       </a>
       
-      <a href="https://linkedin.com/in/yourusername" class="social-item" target="_blank" rel="noopener noreferrer">
-        <div class="social-header">
-          <h3 class="social-title">LinkedIn</h3>
-          <span class="social-icon">💼</span>
-        </div>
-        <p class="social-description">
-          Professional network and career updates. 
-          The corporate side of the digital persona.
-        </p>
-        <div class="social-handle">Your Name</div>
-      </a>
-      
-      <a href="https://instagram.com/yourusername" class="social-item" target="_blank" rel="noopener noreferrer">
+      <a href="https://instagram.com/mt_benno" class="social-item" target="_blank" rel="noopener noreferrer">
         <div class="social-header">
           <h3 class="social-title">Instagram</h3>
-          <span class="social-icon">📸</span>
+          <span class="social-icon"><svg fill="#e3e3e3" height="24px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 viewBox="-271 273 256 256" xml:space="preserve">
+<path d="M-64.5,273h-157c-27.3,0-49.5,22.2-49.5,49.5v52.3v104.8c0,27.3,22.2,49.5,49.5,49.5h157c27.3,0,49.5-22.2,49.5-49.5V374.7
+	v-52.3C-15.1,295.2-37.3,273-64.5,273z M-50.3,302.5h5.7v5.6v37.8l-43.3,0.1l-0.1-43.4L-50.3,302.5z M-179.6,374.7
+	c8.2-11.3,21.5-18.8,36.5-18.8s28.3,7.4,36.5,18.8c5.4,7.4,8.5,16.5,8.5,26.3c0,24.8-20.2,45.1-45.1,45.1s-44.9-20.3-44.9-45.1
+	C-188.1,391.2-184.9,382.1-179.6,374.7z M-40,479.5C-40,493-51,504-64.5,504h-157c-13.5,0-24.5-11-24.5-24.5V374.7h38.2
+	c-3.3,8.1-5.2,17-5.2,26.3c0,38.6,31.4,70,70,70c38.6,0,70-31.4,70-70c0-9.3-1.9-18.2-5.2-26.3H-40V479.5z"/>
+</svg>
+</span>
         </div>
-        <p class="social-description">
-          Visual snippets of life and creative projects. 
-          ASCII art meets real-world aesthetics.
-        </p>
-        <div class="social-handle">@yourusername</div>
+        <div class="social-handle">@mt_benno</div>
       </a>
       
-      <a href="https://youtube.com/@yourusername" class="social-item" target="_blank" rel="noopener noreferrer">
+      <a href="https://www.printables.com/@mt_benno" class="social-item" target="_blank" rel="noopener noreferrer">
         <div class="social-header">
-          <h3 class="social-title">YouTube</h3>
-          <span class="social-icon">📺</span>
+          <h3 class="social-title">Printables</h3>
+          <span class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-181 240-296q-19-11-29.5-29T200-365v-230q0-22 10.5-40t29.5-29l200-115q19-11 40-11t40 
+            11l200 115q19 11 29.5 29t10.5 40v230q0 22-10.5 40T720-296L520-181q-19 11-40 11t-40-11Zm0-92v-184l-160-93v185l160 92Zm80 0 160-92v-185l-160 93v184ZM80-680v-120q0-33 23.5-56.5T160-880h120v80H160v120H80ZM280-80H160q-33 
+            0-56.5-23.5T80-160v-120h80v120h120v80Zm400 0v-80h120v-120h80v120q0 33-23.5 56.5T800-80H680Zm120-600v-120H680v-80h120q33 0 56.5 23.5T880-800v120h-80ZM480-526l158-93-158-91-158 91 158 93Zm0 45Zm0-45Zm40 69Zm-80 0Z"/></svg></span>
         </div>
         <p class="social-description">
-          Tech tutorials, coding demos, and development content. 
-          Moving pictures for the terminal generation.
+          My 3D printing projects, models, and designs.
         </p>
-        <div class="social-handle">@yourusername</div>
+        <div class="social-handle">@mt_benno</div>
       </a>
-      
-      <a href="https://discord.gg/yourinvite" class="social-item" target="_blank" rel="noopener noreferrer">
-        <div class="social-header">
-          <h3 class="social-title">Discord</h3>
-          <span class="social-icon">💬</span>
-        </div>
-        <p class="social-description">
-          Community server for discussions and collaboration. 
-          Real-time chat for the digital nomads.
-        </p>
-        <div class="social-handle">Join Server</div>
-      </a>
-    </div>
     
+    <div class="dashes">
+      <p>// </p>
+    </div>
     <div class="contact-section">
-      <h2>Get in Touch</h2>
-      <p>Have a project in mind or just want to chat?</p>
-      <a href="mailto:your.email@example.com" class="email-link">your.email@example.com</a>
+      <p>Have a project in mind?</p>
+      <a href="mailto:ben@bmercer.xyz" class="email-link">ben@bmercer.xyz</a>
     </div>
   </div>
 </body>
