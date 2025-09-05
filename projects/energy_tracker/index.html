@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EnergyTracker | BMERCER.XYZ</title>
+  <style>
+    :root{
+      color-scheme: dark;
+      --bg:#0b0b10;--fg:#eaeaea;--muted:#8a8f98;--accent:#bd64f8;--card:#141518;--border:#26282d;--green:#00ff99;--yellow:#ffff00;--red:#ff4545;
+    }
+    
+    html,body{height:100%; margin:0; padding:0;}
+    body{background:var(--bg);color:var(--fg);font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; line-height:1.6;}
+    
+    .container{max-width:1200px; margin:0 auto; padding:20px;}
+    
+    .header{
+      text-align:center;
+      padding:40px 0;
+      border-bottom:2px solid var(--border);
+      margin-bottom:40px;
+    }
+    
+    .ascii-title{
+      font-size:clamp(8px, 1.5vw, 12px);
+      line-height:0.8;
+      color:var(--accent);
+      white-space:pre;
+      font-weight:bold;
+      margin-bottom:20px;
+    }
+    
+    .subtitle{
+      font-size:18px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+    
+    .version{
+      color:var(--green);
+      font-size:14px;
+    }
+    
+    .section{
+      background:var(--card);
+      border:2px solid var(--border);
+      border-radius:8px;
+      padding:30px;
+      margin-bottom:30px;
+      position:relative;
+    }
+    
+    .section-header{
+      color:var(--accent);
+      font-size:20px;
+      font-weight:bold;
+      margin-bottom:20px;
+      text-transform:uppercase;
+      letter-spacing:2px;
+    }
+    
+    .section-header::before{
+      content:"[";
+      color:var(--green);
+    }
+    
+    .section-header::after{
+      content:"]";
+      color:var(--green);
+    }
+    
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+      gap:20px;
+      margin-bottom:20px;
+    }
+    
+    .info-item{
+      background:var(--bg);
+      border:1px solid var(--border);
+      padding:15px;
+      border-radius:4px;
+    }
+    
+    .info-label{
+      color:var(--accent);
+      font-weight:bold;
+      margin-bottom:5px;
+    }
+    
+    .roadmap-item{
+      display:flex;
+      align-items:flex-start;
+      margin-bottom:15px;
+      padding:10px;
+      background:var(--bg);
+      border-radius:4px;
+    }
+    
+    .status{
+      padding:2px 8px;
+      border-radius:3px;
+      font-size:12px;
+      font-weight:bold;
+      margin-right:15px;
+      min-width:80px;
+      text-align:center;
+    }
+    
+    .status.completed{background:var(--green); color:var(--bg);}
+    .status.in-progress{background:var(--yellow); color:var(--bg);}
+    .status.planned{background:var(--muted); color:var(--bg);}
+    
+    .back-button{
+      position:fixed;
+      top:20px;
+      left:20px;
+      background:var(--card);
+      border:2px solid var(--border);
+      color:var(--fg);
+      padding:10px 20px;
+      text-decoration:none;
+      border-radius:4px;
+      font-family:inherit;
+      transition:all 0.3s ease;
+    }
+    
+    .back-button:hover{
+      border-color:var(--accent);
+      color:var(--accent);
+    }
+    
+    .terminal-prompt{
+      color:var(--green);
+      font-weight:bold;
+    }
+    
+    .highlight{
+      color:var(--accent);
+      font-weight:bold;
+    }
+    
+    code{
+      background:var(--bg);
+      padding:2px 6px;
+      border-radius:3px;
+      color:var(--green);
+      font-size:14px;
+    }
+    
+    @media (max-width: 768px) {
+      .container{padding:15px;}
+      .ascii-title{font-size:8px;}
+      .section{padding:20px;}
+      .info-grid{grid-template-columns:1fr;}
+      .back-button{position:static; margin-bottom:20px; display:inline-block;}
+    }
+  </style>
+</head>
+<body>
+  <a href="/" class="back-button">← BACK TO MAIN</a>
+  
+  <div class="container">
+    <div class="header">
+      <pre class="ascii-title">  
+ $$$$$$\  $$\                         $$\                 $$$$$$$$\                                                         $$$$$$$$\                           $$\                           
+$$  __$$\ \__|                        $$ |                $$  _____|                                                        \__$$  __|                          $$ |                          
+$$ /  \__|$$\ $$$$$$\$$$$\   $$$$$$\  $$ | $$$$$$\        $$ |      $$$$$$$\   $$$$$$\   $$$$$$\   $$$$$$\  $$\   $$\          $$ | $$$$$$\  $$$$$$\   $$$$$$$\ $$ |  $$\  $$$$$$\   $$$$$$\  
+\$$$$$$\  $$ |$$  _$$  _$$\ $$  __$$\ $$ |$$  __$$\       $$$$$\    $$  __$$\ $$  __$$\ $$  __$$\ $$  __$$\ $$ |  $$ |         $$ |$$  __$$\ \____$$\ $$  _____|$$ | $$  |$$  __$$\ $$  __$$\ 
+ \____$$\ $$ |$$ / $$ / $$ |$$ /  $$ |$$ |$$$$$$$$ |      $$  __|   $$ |  $$ |$$$$$$$$ |$$ |  \__|$$ /  $$ |$$ |  $$ |         $$ |$$ |  \__|$$$$$$$ |$$ /      $$$$$$  / $$$$$$$$ |$$ |  \__|
+$$\   $$ |$$ |$$ | $$ | $$ |$$ |  $$ |$$ |$$   ____|      $$ |      $$ |  $$ |$$   ____|$$ |      $$ |  $$ |$$ |  $$ |         $$ |$$ |     $$  __$$ |$$ |      $$  _$$<  $$   ____|$$ |      
+\$$$$$$  |$$ |$$ | $$ | $$ |$$$$$$$  |$$ |\$$$$$$$\       $$$$$$$$\ $$ |  $$ |\$$$$$$$\ $$ |      \$$$$$$$ |\$$$$$$$ |         $$ |$$ |     \$$$$$$$ |\$$$$$$$\ $$ | \$$\ \$$$$$$$\ $$ |      
+ \______/ \__|\__| \__| \__|$$  ____/ \__| \_______|      \________|\__|  \__| \_______|\__|       \____$$ | \____$$ |         \__|\__|      \_______| \_______|\__|  \__| \_______|\__|      
+                            $$ |                                                                  $$\   $$ |$$\   $$ |                                                                        
+                            $$ |                                                                  \$$$$$$  |\$$$$$$  |                                                                        
+                            \__|                                                                   \______/  \______/                                                                                                                                             
+      </pre>
+      <div class="subtitle">Mobile Energy Consumption Monitor</div>
+      <div class="version"><span class="terminal-prompt">$</span> version <span class="highlight">1.2.0</span> | status: <span class="highlight">ACTIVE DEVELOPMENT</span></div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">Application Overview</div>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Platform</div>
+          <div>Cross-platform mobile application</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Primary Function</div>
+          <div>Real-time energy consumption tracking and optimization</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Target Users</div>
+          <div>Energy-conscious consumers, homeowners, businesses</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Development Stack</div>
+          <div><code>React Native</code> | <code>Node.js</code> | <code>SQLite</code></div>
+        </div>
+      </div>
+      
+      <p>EnergyTracker is a comprehensive mobile application designed to monitor, analyze, and optimize energy consumption patterns. The app provides real-time insights into power usage, cost projections, and personalized recommendations for reducing energy waste.</p>
+      
+      <p>Key features include automated device detection, intelligent usage pattern recognition, customizable alerts, and detailed analytics with historical data visualization. The application aims to empower users with actionable data to make informed decisions about their energy consumption.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-header">Development Roadmap</div>
+      
+      <div class="roadmap-item">
+        <div class="status completed">COMPLETED</div>
+        <div>
+          <strong>Core Infrastructure</strong><br>
+          <span class="muted">Healthkit integration, privacy authentication, basic UI framework</span>
+        </div>
+      </div>
+      
+      <div class="roadmap-item">
+        <div class="status completed">COMPLETED</div>
+        <div>
+          <strong>Real-time Monitoring</strong><br>
+          <span class="muted">Live energy consumption reporting, data collection engine</span>
+        </div>
+      </div>
+      
+      <div class="roadmap-item">
+        <div class="status in-progress">IN PROGRESS</div>
+        <div>
+          <strong>Analytics Dashboard</strong><br>
+          <span class="muted">Historical data visualization, trend analysis, consumption patterns</span>
+        </div>
+      </div>
+      
+      <div class="roadmap-item">
+        <div class="status in-progress">IN PROGRESS</div>
+        <div>
+          <strong>Smart Alerts System</strong><br>
+          <span class="muted">Customizable notifications, threshold monitoring, anomaly detection</span>
+        </div>
+      </div>
+      
+      <div class="roadmap-item">
+        <div class="status planned">PLANNED</div>
+        <div>
+          <strong>Device Integration</strong><br>
+          <span class="muted">Daily, weekly, and monthly energy reports with estimated weight gain/ loss</span>
+        </div>
+      </div>
+      
+      <div class="roadmap-item">
+        <div class="status planned">PLANNED</div>
+        <div>
+          <strong>Complication Support</strong><br>
+          <span class="muted">Apple watch complication support</span>
+        </div>
+      </div>
+      
+      <div class="roadmap-item">
+        <div class="status planned">PLANNED</div>
+        <div>
+          <strong>Beta Release</strong><br>
+          <span class="muted">Performance optimization</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">Privacy Policy</div>
+      <p><span class="terminal-prompt">user@energytracker:~$</span> <span class="highlight">cat privacy_policy.txt</span></p>
+      
+      <p>Your privacy and data security are paramount to the EnergyTracker application. This section outlines our commitment to protecting your personal information and energy consumption data.</p>
+      
+      <h3 style="color: var(--accent); margin-top: 20px;">Data Collection</h3>
+      <p>EnergyTracker collects energy consumption data, device usage patterns, and user preferences to provide personalized insights and recommendations. All data collection is transparent and requires explicit user consent.</p>
+      
+      <h3 style="color: var(--accent); margin-top: 20px;">Data Storage & Security</h3>
+      <p>All sensitive data is encrypted both in transit and at rest using industry-standard protocols. Local device storage is utilized where possible to minimize cloud data exposure.</p>
+      
+      <h3 style="color: var(--accent); margin-top: 20px;">Third-Party Sharing</h3>
+      <p>EnergyTracker does not sell, trade, or share personal data with third parties. Anonymous, aggregated data may be used for research purposes to improve energy efficiency algorithms.</p>
+      
+      <p style="margin-top: 20px; padding: 15px; background: var(--bg); border-left: 4px solid var(--accent);">
+        <strong>Note:</strong> This privacy policy is currently in development and will be updated with comprehensive legal language and specific data handling procedures before the public release.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
