@@ -11,10 +11,30 @@
     }
     html,body{height:100%; margin:0; background:var(--bg); color:var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; overflow-x: hidden;}
     
+    .ascii-wallpaper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+  z-index: 0;
+      opacity: 0.7;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 8px;
+      line-height: 1;
+      white-space: pre;
+      overflow: hidden;
+      color: var(--accent);
+      pointer-events: none;
+      user-select: none;
+    }
+    
     .container {
       max-width: 800px;
       margin: 0 auto;
       padding: 20px;
+  position: relative;
+  z-index: 1;
     }
     
     .header {
@@ -24,11 +44,16 @@
       padding-bottom: 20px;
     }
     
-    .header h1 {
-      font-size: 2.5rem;
+    /* ASCII title to replace glowing H1 */
+    .ascii-title {
+      font-size: 10px;
+      line-height: 0.9;
+      white-space: pre;
+      color: var(--fg);
+      font-weight: bold;
       margin: 0 0 10px 0;
-      color: var(--accent);
-      text-shadow: 0 0 10px var(--accent);
+      display: inline-block;
+      text-align: left;
     }
     
     .header p {
@@ -191,11 +216,23 @@
   </style>
 </head>
 <body>
+  <pre class="ascii-wallpaper" id="ascii-wall" aria-hidden="true"></pre>
   <div class="container">
     <a href="/" class="back-link">← Back to Home</a>
     
     <div class="header">
-      <h1>SOCIALS</h1>
+      <pre class="ascii-title">
+_____/\\\\\\\\\\\_____________________________________________________/\\\\\\_________________        
+ ___/\\\/////////\\\__________________________________________________\////\\\_________________       
+  __\//\\\______\///_______________________________/\\\___________________\/\\\_________________      
+   ___\////\\\_____________/\\\\\________/\\\\\\\\_\///___/\\\\\\\\\_______\/\\\_____/\\\\\\\\\\_     
+    ______\////\\\________/\\\///\\\____/\\\//////___/\\\_\////////\\\______\/\\\____\/\\\//////__    
+     _________\////\\\____/\\\__\//\\\__/\\\_________\/\\\___/\\\\\\\\\\_____\/\\\____\/\\\\\\\\\\_   
+      __/\\\______\//\\\__\//\\\__/\\\__\//\\\________\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_  
+       _\///\\\\\\\\\\\/____\///\\\\\/____\///\\\\\\\\_\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_ 
+        ___\///////////________\/////________\////////__\///___\////////\//__\/////////__\//////////__
+
+      </pre>
       <p>// Where else to find me and my work</p>
     </div>
     
@@ -262,5 +299,18 @@
       <a href="mailto:ben@bmercer.xyz" class="email-link">ben@bmercer.xyz</a>
     </div>
   </div>
+  <script>
+    (function(){
+      try {
+        fetch('ascii_art.txt')
+          .then(function(r){ return r.ok ? r.text() : Promise.reject(r.status); })
+          .then(function(txt){
+            var el = document.getElementById('ascii-wall');
+            if (el) el.textContent = txt;
+          })
+          .catch(function(){ /* noop */ });
+      } catch(_) { /* noop */ }
+    })();
+  </script>
 </body>
 </html>

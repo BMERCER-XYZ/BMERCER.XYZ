@@ -24,11 +24,16 @@
       padding-bottom: 20px;
     }
     
-    .header h1 {
-      font-size: 2.5rem;
+    /* ASCII title to replace glowing H1 */
+    .ascii-title {
+      font-size: 10px;
+      line-height: 0.9;
+      white-space: pre;
+      color: var(--fg);
+      font-weight: bold;
       margin: 0 0 10px 0;
-      color: var(--accent);
-      text-shadow: 0 0 10px var(--accent);
+      display: inline-block;
+      text-align: left;
     }
     
     .header p {
@@ -206,7 +211,18 @@
     <a href="/" class="back-link">← Back to Home</a>
     
     <div class="header">
-      <h1>PROJECTS</h1>
+      <pre class="ascii-title">
+__/\\\\\\\\\\\\\__________________________________________________________________________________________________        
+ _\/\\\/////////\\\___________________________________/\\\_________________________________________________________       
+  _\/\\\_______\/\\\__________________________________\///___________________________________/\\\___________________      
+   _\/\\\\\\\\\\\\\/___/\\/\\\\\\\______/\\\\\__________/\\\_____/\\\\\\\\______/\\\\\\\\__/\\\\\\\\\\\__/\\\\\\\\\\_     
+    _\/\\\/////////____\/\\\/////\\\___/\\\///\\\_______\/\\\___/\\\/////\\\___/\\\//////__\////\\\////__\/\\\//////__    
+     _\/\\\_____________\/\\\___\///___/\\\__\//\\\______\/\\\__/\\\\\\\\\\\___/\\\____________\/\\\______\/\\\\\\\\\\_   
+      _\/\\\_____________\/\\\_________\//\\\__/\\\___/\\_\/\\\_\//\\///////___\//\\\___________\/\\\_/\\__\////////\\\_  
+       _\/\\\_____________\/\\\__________\///\\\\\/___\//\\\\\\___\//\\\\\\\\\\__\///\\\\\\\\____\//\\\\\____/\\\\\\\\\\_ 
+        _\///______________\///_____________\/////______\//////_____\//////////_____\////////______\/////____\//////////__
+
+      </pre>
       <p>// Some of my past and current projects</p>
     </div>
     
@@ -239,6 +255,24 @@
         <p class="project-description">
           IOS & WatchOS app to monitor and log caloric intake and energy expenditure. 
           Syncs with HealthKit and provides daily/weekly insights.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">IOS</span>
+          <span class="tech-tag">WatchOS</span>
+          <span class="tech-tag">Swift</span>
+        </div>
+        <div class="project-links">
+          <span class="project-link">AppStore</span>
+        </div>
+      </a>
+
+      <a href="/projects/med_timer.html" class="project-item project-link-card">
+        <div class="project-header">
+          <h3 class="project-title">Med Timer</h3>
+          <span class="project-status active">Active</span>
+        </div>
+        <p class="project-description">
+          IOS & WatchOS app to manage medication schedules with reminders and logging.
         </p>
         <div class="project-tech">
           <span class="tech-tag">IOS</span>
