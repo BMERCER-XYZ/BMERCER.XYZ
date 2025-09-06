@@ -33,7 +33,7 @@ body{
   margin-bottom:40px;
 }
 .ascii-title{
-  font-size:clamp(8px, 1.5vw, 12px);
+  font-size:clamp(5px, 1.5vw, 12px);
   line-height:0.8;
   color:var(--fg);
   white-space:pre;
