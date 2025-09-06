@@ -13,6 +13,23 @@
     body{margin:0;background:var(--bg);color:var(--fg);font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;display:flex;flex-direction:column;}
     #banner{padding:60px; text-align:center; }
     
+      /* Dynamic ASCII title sizing */
+      #banner .ascii-title{
+        --ascii-cols: 160;
+        --ascii-container-w: min(100vw, 100vw);
+        --ascii-padding: 120px; /* banner has padding-left/right 60px each */
+        --ascii-max-font: 14px;
+        /* scale lets you bump size without changing layout math */
+        --banner-scale: 1.7;
+        font-size: min(calc(((var(--ascii-container-w) - var(--ascii-padding)) / var(--ascii-cols)) * var(--banner-scale)), var(--ascii-max-font));
+        white-space: pre;
+        line-height: 0.9;
+        color: var(--fg);
+        font-weight: bold;
+        display: inline-block;
+        text-align: center;
+        margin: 0;
+      }
     .screen-wrap{
       flex:1;
       overflow:hidden;
@@ -60,14 +77,33 @@
     .nav-button:active {
       transform: translateY(0);
     }
-    pre#screen{margin:0; padding:16px; white-space:pre; line-height:1.05; font-size:8px; tab-size:2; text-align:center; display:inline-block; vertical-align:middle;}
+    pre#screen{
+      margin:0;
+      padding:16px;
+      white-space:pre;
+      line-height:1.05;
+      tab-size:2;
+      text-align:center;
+      display:inline-block;
+      vertical-align:middle;
+      /* dynamic sizing driven by ascii-fit.js */
+      --ascii-cols: 160; /* fallback */
+      --ascii-rows: 60;  /* fallback, if needed */
+      --ascii-container-w: 100vw;
+      --ascii-container-h: 100vh;
+      --screen-padding: 32px; /* padding left+right */
+      --screen-max-font: 10px; /* cap font size */
+      /* choose the limiting dimension: width-based char width and height-based char height */
+      /* Estimate row height as 1ch*line-height; use width constraint primarily to avoid overflow */
+  font-size: min(calc(((var(--ascii-container-w) - var(--screen-padding)) / var(--ascii-cols)) * var(--screen-scale, 1.7)), var(--screen-max-font));
+    }
     
     
     /* Scaling for mobile */
     @media (max-width: 800px) {
       html, body {
         display: grid;
-        grid-template-rows: 200px 115px auto;
+        grid-template-rows: 200px var(--ascii-content-h, auto) auto;
         height: 100vh;
         overflow: hidden;
         position: fixed;
@@ -80,10 +116,16 @@
         grid-row: 1;
         padding: 10px 5px;
         padding-top: 50px;
-        font-size: 3.5px;
         line-height: 0.7;
-        overflow: hidden;
-        max-height: 50px;
+        /* allow the ASCII to define its own height */
+        overflow: visible;
+      }
+      /* Fit banner ASCII to viewport width exactly (201 columns) */
+      #banner .ascii-title{
+        --banner-cols: 125;                  /* fixed columns for this banner */
+        --banner-pad-x: 10px;                /* banner padding-left+right (5+5) */
+        --banner-fudge: 2px;                 /* small safety to avoid subpixel overflow */
+        font-size: calc((100vw - var(--banner-pad-x) - var(--banner-fudge)) / var(--banner-cols));
       }
       .screen-wrap {
         grid-row: 2;
@@ -95,7 +137,6 @@
       }
       pre#screen {
         margin: 0;
-        font-size: 1.5px;
       }
       .nav-buttons {
         grid-row: 3;
@@ -119,48 +160,7 @@
       }
     }
     
-    /* Hide everything except the screen for widths between 800px and 1000px */
-    @media (max-width: 1000px) and (min-width: 801px) {
-      body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden;
-        background: var(--bg);
-        display: grid;
-        align-items: center;
-        justify-content: center;
-      }
-      #banner,
-      .nav-buttons {
-        display: none !important;
-      }
-      .screen-wrap {
-        width: 100vw;
-        height: 100vh;
-        display: grid !important;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-        margin: 0;
-        
 
-
-      }
-      pre#screen {
-        margin: 0;
-        padding: 0;
-        font-size: 3.5px; /* Adjust as needed for visibility */
-        display: grid;
-        justify-content: center;
-        box-sizing: content-box;
-        max-width: 100vw;
-        max-height: 100vh;
-                overflow: hidden;
-
-      }
-    }
 
   </style>
 </head>
@@ -168,15 +168,19 @@
 
 
   <div id="banner">
-    __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\____________/\\\\\\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\____________/\\\_______/\\\__/\\\________/\\\__/\\\\\\\\\\\\\\\_        
- _\/\\\/////////\\\_\/\\\\\\________/\\\\\\_\/\\\///////////___/\\\///////\\\_______/\\\////////__\/\\\///////////___/\\\///////\\\_________\///\\\___/\\\/__\///\\\____/\\\/__\////////////\\\__       
-  _\/\\\_______\/\\\_\/\\\//\\\____/\\\//\\\_\/\\\_____________\/\\\_____\/\\\_____/\\\/___________\/\\\_____________\/\\\_____\/\\\___________\///\\\\\\/______\///\\\/\\\/______________/\\\/___      
-   _\/\\\\\\\\\\\\\\__\/\\\\///\\\/\\\/_\/\\\_\/\\\\\\\\\\\_____\/\\\\\\\\\\\/_____/\\\_____________\/\\\\\\\\\\\_____\/\\\\\\\\\\\/______________\//\\\\__________\///\\\/______________/\\\/_____     
-    _\/\\\/////////\\\_\/\\\__\///\\\/___\/\\\_\/\\\///////______\/\\\//////\\\____\/\\\_____________\/\\\///////______\/\\\//////\\\_______________\/\\\\____________\/\\\_____________/\\\/_______    
-     _\/\\\_______\/\\\_\/\\\____\///_____\/\\\_\/\\\_____________\/\\\____\//\\\___\//\\\____________\/\\\_____________\/\\\____\//\\\______________/\\\\\\___________\/\\\___________/\\\/_________   
-      _\/\\\_______\/\\\_\/\\\_____________\/\\\_\/\\\_____________\/\\\_____\//\\\___\///\\\__________\/\\\_____________\/\\\_____\//\\\___________/\\\////\\\_________\/\\\_________/\\\/___________  
-       _\/\\\\\\\\\\\\\/__\/\\\_____________\/\\\_\/\\\\\\\\\\\\\\\_\/\\\______\//\\\____\////\\\\\\\\\_\/\\\\\\\\\\\\\\\_\/\\\______\//\\\__/\\\__/\\\/___\///\\\_______\/\\\________/\\\\\\\\\\\\\\\_ 
-        _\/////////////____\///______________\///__\///////////////__\///________\///________\/////////__\///////////////__\///________\///__\///__\///_______\///________\///________\///////////////__
+  <pre class="ascii-title" data-col-buffer="0">
+  __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\____________/\\\\\\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\____________/\\\_______/\\\__/\\\________/\\\__/\\\\\\\\\\\\\\\_        
+  _\/\\\/////////\\\_\/\\\\\\________/\\\\\\_\/\\\///////////___/\\\///////\\\_______/\\\////////__\/\\\///////////___/\\\///////\\\_________\///\\\___/\\\/__\///\\\____/\\\/__\////////////\\\__       
+   _\/\\\_______\/\\\_\/\\\//\\\____/\\\//\\\_\/\\\_____________\/\\\_____\/\\\_____/\\\/___________\/\\\_____________\/\\\_____\/\\\___________\///\\\\\\/______\///\\\/\\\/______________/\\\/___      
+    _\/\\\\\\\\\\\\\\__\/\\\\///\\\/\\\/_\/\\\_\/\\\\\\\\\\\_____\/\\\\\\\\\\\/_____/\\\_____________\/\\\\\\\\\\\_____\/\\\\\\\\\\\/______________\//\\\\__________\///\\\/______________/\\\/_____     
+     _\/\\\/////////\\\_\/\\\__\///\\\/___\/\\\_\/\\\///////______\/\\\//////\\\____\/\\\_____________\/\\\///////______\/\\\//////\\\_______________\/\\\\____________\/\\\_____________/\\\/_______    
+      _\/\\\_______\/\\\_\/\\\____\///_____\/\\\_\/\\\_____________\/\\\____\//\\\___\//\\\____________\/\\\_____________\/\\\____\//\\\______________/\\\\\\___________\/\\\___________/\\\/_________   
+       _\/\\\_______\/\\\_\/\\\_____________\/\\\_\/\\\_____________\/\\\_____\//\\\___\///\\\__________\/\\\_____________\/\\\_____\//\\\___________/\\\////\\\_________\/\\\_________/\\\/___________  
+        _\/\\\\\\\\\\\\\/__\/\\\_____________\/\\\_\/\\\\\\\\\\\\\\\_\/\\\______\//\\\____\////\\\\\\\_\/\\\\\\\\\\\\\\\_\/\\\______\//\\\__/\\\__/\\\/___\///\\\_______\/\\\________/\\\\\\\\\\\\\\\_ 
+         _\/////////////____\///______________\///__\///////////////__\///________\///________\/////////__\///////////////__\///________\///__\///__\///_______\///________\///________\///////////////__
+      </pre>
+      <script src="/projects/ascii-fit.js"></script>
+    </div>
 
   </div>
   
@@ -207,7 +211,7 @@
     // DOM refs
     const screenEl = document.getElementById('screen');
 
-    // Font size is now handled by CSS media queries for responsiveness
+  // Font size is driven by ascii-fit.js now
 
     // state
     let frames = new Array(TOTAL_FRAMES + 1); // 1-indexed for simplicity
@@ -223,7 +227,7 @@
     }
 
 
-    async function preload(){
+  async function preload(){
       const tasks = [];
       for(let i=1;i<=TOTAL_FRAMES;i++){
         tasks.push(
@@ -235,6 +239,10 @@
       }
       await Promise.all(tasks);
       screenEl.textContent = frames[1] || '(empty)';
+      if (window.asciiFit) {
+        // apply fit and re-measure on each frame update
+        window.__screenFit = window.asciiFit.apply(screenEl, { onResize: true });
+      }
       framePosition = 1.0;
       play();
     }
@@ -242,7 +250,8 @@
     function show(i){
       frameIndex = Math.floor(i);
       framePosition = i;
-      screenEl.textContent = frames[frameIndex] || '';
+  screenEl.textContent = frames[frameIndex] || '';
+  if (window.__screenFit && window.__screenFit.update) window.__screenFit.update();
     }
 
     function step(){
@@ -302,5 +311,6 @@
     // start
     preload();
   </script>
+  <script src="/projects/ascii-fit.js"></script>
 </body>
 </html>

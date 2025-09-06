@@ -33,12 +33,20 @@ body{
   margin-bottom:40px;
 }
 .ascii-title{
-  font-size:clamp(5px, 1.5vw, 12px);
+  /* Dynamically scale font to fit container based on longest line length */
+  /* JS sets --ascii-cols and --ascii-container-w per page; sensible fallbacks here */
+  --ascii-cols: 160;                 /* fallback character width */
+  --ascii-container-w: min(100vw, 1200px); /* fallback to container max width */
+  --ascii-padding: 40px;             /* matches .header padding top/bottom; horizontal padding from .container is 40px total */
+  --ascii-max-font: 14px;            /* cap for large screens */
+  font-size: min(calc((var(--ascii-container-w) - var(--ascii-padding)) / var(--ascii-cols)), var(--ascii-max-font));
   line-height:0.8;
   color:var(--fg);
   white-space:pre;
   font-weight:bold;
   margin-bottom:20px;
+  display:inline-block;             /* let parent text-align center this element */
+  text-align:left;                   /* keep ASCII alignment */
 }
 .subtitle{
   font-size:18px;
@@ -175,7 +183,6 @@ code{
 }
 @media (max-width: 768px) {
   .container{padding:15px;}
-  .ascii-title{font-size:8px;}
   .section{padding:20px;}
   .info-grid{grid-template-columns:1fr;}
   .back-button{position:static; margin-bottom:20px; display:inline-block;}

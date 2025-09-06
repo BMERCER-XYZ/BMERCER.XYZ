@@ -26,7 +26,14 @@
     
     /* ASCII title to replace glowing H1 */
     .ascii-title {
-      font-size: 10px;
+      /* dynamic sizing based on content width */
+      --ascii-cols: 160;
+      --ascii-container-w: min(100vw, 800px);
+      --ascii-padding: 40px; /* container has 20px left/right */
+      --ascii-max-font: 10px;
+      /* scale lets you bump size without changing layout math */
+      --title-scale: 1.7;
+      font-size: min(calc(((var(--ascii-container-w) - var(--ascii-padding)) / var(--ascii-cols)) * var(--title-scale)), var(--ascii-max-font));
       line-height: 0.9;
       white-space: pre;
       color: var(--fg);
@@ -211,7 +218,7 @@
     <a href="/" class="back-link">← Back to Home</a>
     
     <div class="header">
-      <pre class="ascii-title">
+  <pre class="ascii-title" data-col-buffer="0">
 __/\\\\\\\\\\\\\__________________________________________________________________________________________________        
  _\/\\\/////////\\\___________________________________/\\\_________________________________________________________       
   _\/\\\_______\/\\\__________________________________\///___________________________________/\\\___________________      
@@ -223,6 +230,7 @@ __/\\\\\\\\\\\\\________________________________________________________________
         _\///______________\///_____________\/////______\//////_____\//////////_____\////////______\/////____\//////////__
 
       </pre>
+  <script src="ascii-fit.js"></script>
       <p>// Some of my past and current projects</p>
     </div>
     
