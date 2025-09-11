@@ -125,6 +125,12 @@
       color: var(--bg);
     }
     
+    .project-status.archived {
+      background: var(--border);
+      color: var(--muted);
+      opacity: 0.7;
+    }
+    
     .project-description {
       color: var(--muted);
       line-height: 1.6;
@@ -235,45 +241,31 @@ __/\\\\\\\\\\\\\________________________________________________________________
     </div>
     
     <div class="projects-list">
-      <div class="project-item">
-        <div class="project-header">
-          <h3 class="project-title">ASCII Black Hole</h3>
-          <span class="project-status active">Active</span>
-        </div>
-        <p class="project-description">
-          Real-time ASCII art animation system with responsive scaling. 
-          Features 300+ hand-crafted frames and smooth interpolation.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">JavaScript</span>
-          <span class="tech-tag">CSS3</span>
-          <span class="tech-tag">HTML5</span>
-        </div>
+      
+      <div class="project-item project-link-card">
+        <a href="/projects/energy_tracker.html" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
+          <div class="project-header">
+            <h3 class="project-title">Simple Energy Tracker</h3>
+            <span class="project-status active">Active</span>
+          </div>
+          <p class="project-description">
+            IOS & WatchOS app to monitor and log caloric intake and energy expenditure. 
+            Syncs with HealthKit and provides daily/weekly insights.
+          </p>
+          <div class="project-tech">
+            <span class="tech-tag">IOS</span>
+            <span class="tech-tag">WatchOS</span>
+            <span class="tech-tag">Swift</span>
+          </div>
+        </a>
         <div class="project-links">
-          <a href="/" class="project-link">Live Demo</a>
-          <a href="#" class="project-link">Source</a>
+          <a class="project-link" href="https://apps.apple.com/au/app/simple-energy-tracker/id6751491337" target="_blank" rel="noopener noreferrer">App store</a>
         </div>
       </div>
 
-      <a href="/projects/energy_tracker.html" class="project-item project-link-card">
-        <div class="project-header">
-          <h3 class="project-title">Simple Energy Tracker</h3>
-          <span class="project-status active">Active</span>
-        </div>
-        <p class="project-description">
-          IOS & WatchOS app to monitor and log caloric intake and energy expenditure. 
-          Syncs with HealthKit and provides daily/weekly insights.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">IOS</span>
-          <span class="tech-tag">WatchOS</span>
-          <span class="tech-tag">Swift</span>
-        </div>
-        <div class="project-links">
-          <span class="project-link">AppStore</span>
-        </div>
-      </a>
 
+      
+      <!--
       <a href="/projects/med_timer.html" class="project-item project-link-card">
         <div class="project-header">
           <h3 class="project-title">Med Timer</h3>
@@ -291,14 +283,15 @@ __/\\\\\\\\\\\\\________________________________________________________________
           <span class="project-link">AppStore</span>
         </div>
       </a>
+      -->
 
       <a href="/projects/maintenance_tracker.html" class="project-item project-link-card">
         <div class="project-header">
-          <h3 class="project-title">Maintenance Tracker</h3>
+          <h3 class="project-title">Motorcycle Maintenance Tracker</h3>
           <span class="project-status active">Active</span>
         </div>
         <p class="project-description">
-          IOS & WatchOS app to manage medication schedules with reminders and logging.
+          IOS app to manage motorcycle maintenance schedules with reminders and logging.
         </p>
         <div class="project-tech">
           <span class="tech-tag">IOS</span>
@@ -313,7 +306,7 @@ __/\\\\\\\\\\\\\________________________________________________________________
       <div class="project-item">
         <div class="project-header">
           <h3 class="project-title">PNG To ASCII Generator</h3>
-          <span class="project-status">Beta</span>
+          <span class="project-status">ARCHIVED</span>
         </div>
         <p class="project-description">
           Convert PNG images to ASCII art with customizable settings and output options.
@@ -327,6 +320,27 @@ __/\\\\\\\\\\\\\________________________________________________________________
         <div class="project-links">
           <a href="https://github.com/BenDHS/ASCII_Generator" class="project-link">Code</a>
           <a href="https://bendhs.github.io/ASCII_Generator/" class="project-link">Webpage</a>
+        </div>
+      </div>
+
+      <div class="project-item project-link-card">
+        <a href="/projects/poketracker.html" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
+          <div class="project-header">
+            <h3 class="project-title">PokeTracker</h3>
+            <span class="project-status archived">ARCHIVED</span>
+          </div>
+          <p class="project-description">
+            Web application used to fetch and track Pokemon card prices.
+          </p>
+          <div class="project-tech">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">HTML</span>
+            <span class="tech-tag">CSS</span>
+          </div>
+        </a>
+        <div class="project-links">
+          <a href="https://github.com/BenDHS/Pokemon-Card-Tracker-v2" class="project-link">Code</a>
+          <a href="https://poketracker.xyz/" class="project-link">Webpage</a>
         </div>
       </div>
     </div>
