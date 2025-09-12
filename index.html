@@ -40,13 +40,13 @@
     }
     
     .nav-buttons {
-      position: absolute;
-      top: 40%;
-      left: 0;
-      right: 0;
+      position: fixed;
+      top: 400px;
+      left: 250px;
+      right: 250px;
       display: flex;
-      justify-content: center;
-      gap: 1100px;
+      justify-content: space-between;
+      align-items: flex-start;
       pointer-events: none;
       z-index: 10;
     }
@@ -142,6 +142,9 @@
         grid-row: 3;
         position: relative;
         top: 100px;
+        left: unset;
+        right: unset;
+        bottom: unset;
         display: grid;
         gap: 60px;
         grid-template-columns: 200px;
@@ -149,7 +152,8 @@
         width: 100%;
         max-width: 300px;
         margin: 0 auto;
-        
+        justify-content: center;
+        align-items: center;
       }
       .nav-button {
         padding: 6px 12px;

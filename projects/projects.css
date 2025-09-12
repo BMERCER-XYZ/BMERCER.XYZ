@@ -39,15 +39,24 @@ body{
   --ascii-container-w: min(100vw, 1200px); /* fallback to container max width */
   --ascii-padding: 40px;             /* matches .header padding top/bottom; horizontal padding from .container is 40px total */
   --ascii-max-font: 14px;            /* cap for large screens */
-  font-size: min(calc((var(--ascii-container-w) - var(--ascii-padding)) / var(--ascii-cols)), var(--ascii-max-font));
+  --ascii-scale: 1.0;                /* individual scaling multiplier - can be overridden per title */
+  font-size: min(calc(((var(--ascii-container-w) - var(--ascii-padding)) / var(--ascii-cols)) * var(--ascii-scale)), calc(var(--ascii-max-font) * var(--ascii-scale)));
   line-height:0.8;
   color:var(--fg);
   white-space:pre;
   font-weight:bold;
   margin-bottom:20px;
   display:inline-block;             /* let parent text-align center this element */
-  text-align:left;                   /* keep ASCII alignment */
+  text-align:center;                   /* keep ASCII alignment */
 }
+
+/* Individual title scaling classes */
+.ascii-title.scale-small { --ascii-scale: 0.8; --ascii-max-font: 11px; }
+.ascii-title.scale-normal { --ascii-scale: 1.0; --ascii-max-font: 14px; }
+.ascii-title.scale-large { --ascii-scale: 1.3; --ascii-max-font: 18px; }
+.ascii-title.scale-xl { --ascii-scale: 1.6; --ascii-max-font: 22px; }
+.ascii-title.scale-xxl { --ascii-scale: 2.0; --ascii-max-font: 28px; }
+
 .subtitle{
   font-size:18px;
   color:var(--muted);
