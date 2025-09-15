@@ -3,7 +3,7 @@
   --bg:#0b0b10;
   --fg:#eaeaea;
   --muted:#8a8f98;
-  --accent:#bd64f8;
+  --accent:#6b6b6b;
   --card:#141518;
   --border:#26282d;
   --green:#00ff99;
@@ -85,12 +85,12 @@ body{
   letter-spacing:2px;
 }
 .section-header::before{
-  content:"[";
-  color:var(--green);
+  content:">";
+  color:var(--fg);
 }
 .section-header::after{
-  content:"]";
-  color:var(--green);
+  content:"<";
+  color:var(--fg);
 }
 .section-subheader {
   display: flex;
@@ -174,14 +174,14 @@ code{
   background:var(--bg);
   padding:2px 6px;
   border-radius:3px;
-  color:var(--green);
+  color:var(--fg);
   font-size:14px;
 }
 .blinking-cursor {
   display: inline-block;
   margin-left: 2px;
   width: 1ch;
-  color: var(--accent);
+  color: var(--fg);
   font-weight: bold;
   font-size: 1.1em;
   animation: blink 1s steps(1) infinite;
