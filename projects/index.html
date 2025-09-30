@@ -11,7 +11,7 @@
     }
     html,body{height:100%; margin:0; background:var(--bg); color:var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; overflow-x: hidden;}
     
-    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
     
     .header { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
 
@@ -30,6 +30,36 @@
 
     .back-link { display: inline-block; margin-bottom: 30px; color: var(--accent); text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease; border: 1px solid var(--border); padding: 8px 16px; border-radius: 4px; }
     .back-link:hover { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+
+    /* Background ASCII animation layer */
+    .bg-screen-wrap{
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none; /* allow clicking content */
+      opacity: 0.25; /* subtle */
+    }
+    pre#bg-screen{
+      margin:0;
+      padding:0; /* no padding so it can fit exactly to viewport */
+      white-space:pre;
+      line-height:1.05;
+      tab-size:2;
+      text-align:center;
+      display:inline-block;
+      vertical-align:middle;
+      /* dynamic sizing driven by ascii-fit.js */
+      --ascii-cols: 160; /* fallback */
+      --ascii-rows: 60;  /* fallback */
+      --ascii-container-w: 100vw;
+      --ascii-container-h: 100vh;
+      --screen-padding: 0px; /* exact fit to viewport */
+      --screen-max-font: 10px;
+      font-size: min(calc(((var(--ascii-container-w) - var(--screen-padding)) / var(--ascii-cols)) * var(--screen-scale, 1.7)), var(--screen-max-font));
+    }
 
     /* Column layout */
     .project-columns { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start; }
@@ -67,6 +97,10 @@
   </style>
 </head>
 <body>
+  <!-- Background ASCII animation -->
+  <div class="bg-screen-wrap" aria-hidden="true">
+    <pre id="bg-screen">Loading...</pre>
+  </div>
   <div class="container">
     <a href="/" class="back-link">← Back to Home</a>
     
@@ -202,5 +236,102 @@ __/\\\\\\\\\\\\\________________________________________________________________
     
     <div class="coming-soon">More projects in development...</div>
   </div>
+  <script>
+    // Background ASCII animation (Projects page)
+    (function(){
+      const TOTAL_FRAMES_PARAM = Number(new URLSearchParams(location.search).get('bg_frames') || 0);
+      const FPS = Number(new URLSearchParams(location.search).get('bg_fps') || 24);
+      const SPEED = Number(new URLSearchParams(location.search).get('bg_speed') || 1);
+      const FOLDER = 'Projects-ACII-Frames'; // relative to /projects/
+      const PAD = 4;
+      const EXT = '.txt';
+
+      const screenEl = document.getElementById('bg-screen');
+
+      // runtime frame count (detected or from param)
+      let RUN_FRAMES = TOTAL_FRAMES_PARAM > 0 ? TOTAL_FRAMES_PARAM : 300; // provisional default
+      let frames = [];
+      let playing = false;
+      let framePosition = 1.0;
+      let timer = null;
+
+      function pathFor(i){ return `${FOLDER}/${String(i).padStart(PAD,'0')}${EXT}`; }
+
+      async function preload(){
+        const probeLimit = RUN_FRAMES; // initial guess or param
+        const ok = [];
+        const tasks = [];
+        frames.length = probeLimit + 1; // index from 1
+        for(let i=1;i<=probeLimit;i++){
+          tasks.push(
+            fetch(pathFor(i))
+              .then(r=>{ if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
+              .then(txt=>{ frames[i] = txt; ok[i] = true; })
+              .catch(()=>{ frames[i] = ''; ok[i] = false; })
+          );
+        }
+        await Promise.allSettled(tasks);
+        if (TOTAL_FRAMES_PARAM <= 0) {
+          // auto-detect last available frame
+          let last = 0;
+          for (let i = ok.length - 1; i >= 1; i--) {
+            if (ok[i]) { last = i; break; }
+          }
+          RUN_FRAMES = Math.max(1, last);
+          // shrink frames array to detected size
+          frames.length = RUN_FRAMES + 1;
+        }
+        // Ensure first frame exists
+        if (!frames[1]) {
+          // try to find first available frame
+          const firstIdx = frames.findIndex((v, idx) => idx > 0 && v && v.length);
+          screenEl.textContent = firstIdx > 0 ? frames[firstIdx] : '';
+        } else {
+          screenEl.textContent = frames[1];
+        }
+        if (window.asciiFit) {
+          window.__bgFit = window.asciiFit.apply(screenEl, { onResize: true });
+        }
+        play();
+      }
+
+      function show(i){
+        const idx = Math.max(1, Math.min(RUN_FRAMES, Math.floor(i)));
+        framePosition = i;
+        screenEl.textContent = frames[idx] || '';
+        if (window.__bgFit && window.__bgFit.update) window.__bgFit.update();
+      }
+
+      function step(){
+        let next = framePosition + SPEED;
+        if(next > RUN_FRAMES) next = 1;
+        show(next);
+      }
+
+      function play(){
+        if(playing) return; playing = true; startAnimation();
+      }
+
+      function startAnimation(){
+        const interval = 1000 / FPS;
+        let expected = performance.now() + interval;
+        function tick(){
+          if(!playing || document.hidden) return;
+          const now = performance.now();
+          const dt = now - expected;
+          if(dt >= 0){ step(); expected += interval; }
+          timer = setTimeout(tick, Math.max(0, interval - dt));
+        }
+        tick();
+      }
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) { if (timer) { clearTimeout(timer); timer = null; } }
+        else if (playing) { startAnimation(); }
+      });
+
+      preload();
+    })();
+  </script>
 </body>
 </html>
