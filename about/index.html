@@ -13,20 +13,30 @@
     
     .ascii-wallpaper {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       width: 100vw;
       height: 100vh;
-  z-index: 0;
+      z-index: 0;
       opacity: 0.7;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size: 8px;
+      /* dynamic sizing based on content */
+      --ascii-cols: 630;
+      --ascii-rows: 178;
+      --ascii-container-w: 100vw;
+      --ascii-container-h: 100vh;
+      /* cover: fill viewport (may crop) */
+      font-size: max(calc(var(--ascii-container-w) / var(--ascii-cols)), calc(var(--ascii-container-h) / var(--ascii-rows)));
       line-height: 1;
       white-space: pre;
       overflow: hidden;
-      color: var(--accent);
+      color: var(--muted);
       pointer-events: none;
       user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .container {
@@ -58,9 +68,12 @@
       white-space: pre;
       color: var(--fg);
       font-weight: bold;
-      margin: 0 0 10px 0;
-      display: inline-block;
+      /* center horizontally */
+      margin: 0 auto 10px auto;
+      display: block;
+      width: fit-content;
       text-align: left;
+      padding-bottom: 20px;
     }
     
     .header p {
@@ -153,6 +166,25 @@
       text-transform: uppercase;
     }
     
+    /* About section */
+    .about-section {
+      margin: 40px 0 50px;
+      border-bottom: 1px solid var(--border);
+    }
+    .about-section .ascii-title {
+      /* allow a slightly different scale if desired */
+      --title-scale: 1.4;
+      margin-bottom: 10px;
+      display: block;
+      
+    }
+    .about-text {
+      color: var(--fg);
+      line-height: 1.6;
+      font-size: 0.98rem;
+      margin-bottom: 40px;
+    }
+
 
     .contact-section {
       border-top: 1px solid var(--border);
@@ -219,6 +251,11 @@
       .social-icon {
         align-self: flex-start;
       }
+
+      /* Hide heavy ASCII wallpaper on mobile */
+      .ascii-wallpaper {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -229,6 +266,28 @@
     
     <div class="header">
   <pre class="ascii-title" data-col-buffer="0">
+_____/\\\\\\\\\_____/\\\__________________________________________________        
+ ___/\\\\\\\\\\\\\__\/\\\__________________________________________________       
+  __/\\\/////////\\\_\/\\\________________________________________/\\\______      
+   _\/\\\_______\/\\\_\/\\\____________/\\\\\_____/\\\____/\\\__/\\\\\\\\\\\_     
+    _\/\\\\\\\\\\\\\\\_\/\\\\\\\\\____/\\\///\\\__\/\\\___\/\\\_\////\\\////__    
+     _\/\\\/////////\\\_\/\\\////\\\__/\\\__\//\\\_\/\\\___\/\\\____\/\\\______   
+      _\/\\\_______\/\\\_\/\\\__\/\\\_\//\\\__/\\\__\/\\\___\/\\\____\/\\\_/\\__  
+       _\/\\\_______\/\\\_\/\\\\\\\\\___\///\\\\\/___\//\\\\\\\\\_____\//\\\\\___ 
+        _\///________\///__\/////////______\/////______\/////////_______\/////____
+      </pre>
+  <script src="../projects/ascii-fit.js"></script>
+      <p>// Where to find me and my work</p>
+    </div>
+    
+    <section class="about-section" id="about">
+
+      <p class="about-text">I'm an aspiring amateur engineer with a passion for creating solutions. I love working on projects that challenge me and allow me to grow my skills.
+      My interests include software development, 3D printing, and electronics. I'm always looking for new opportunities to learn and collaborate on exciting projects.
+      </p>
+    </section>
+
+          <pre class="ascii-title" id="about-ascii-title" data-col-buffer="0" aria-label="About title">
 _____/\\\\\\\\\\\_____________________________________________________/\\\\\\_________________        
  ___/\\\/////////\\\__________________________________________________\////\\\_________________       
   __\//\\\______\///_______________________________/\\\___________________\/\\\_________________      
@@ -238,12 +297,8 @@ _____/\\\\\\\\\\\_____________________________________________________/\\\\\\___
       __/\\\______\//\\\__\//\\\__/\\\__\//\\\________\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_  
        _\///\\\\\\\\\\\/____\///\\\\\/____\///\\\\\\\\_\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_ 
         ___\///////////________\/////________\////////__\///___\////////\//__\/////////__\//////////__
-
       </pre>
-  <script src="../projects/ascii-fit.js"></script>
-      <p>// Where to find me and my work</p>
-    </div>
-    
+      
     <div class="socials-list">
 
       <a href="https://github.com/BMERCER-XYZ" class="social-item" target="_blank" rel="noopener noreferrer">
@@ -310,13 +365,41 @@ _____/\\\\\\\\\\\_____________________________________________________/\\\\\\___
   <script>
     (function(){
       try {
+        // Skip on small screens for performance and to keep background hidden
+        var isSmall = window.matchMedia('(max-width: 768px)').matches;
+        if (isSmall) return;
         fetch('ascii_art.txt')
           .then(function(r){ return r.ok ? r.text() : Promise.reject(r.status); })
           .then(function(txt){
             var el = document.getElementById('ascii-wall');
-            if (el) el.textContent = txt;
+            if (el) {
+              el.textContent = txt;
+              // Apply ascii-fit.js to make the background fit properly
+              if (window.asciiFit) {
+                window.asciiFit.apply(el, {
+                  colBuffer: 0,
+                  rowBuffer: 0,
+                  container: document.body,
+                  text: txt
+                });
+              }
+            }
           })
           .catch(function(){ /* noop */ });
+      } catch(_) { /* noop */ }
+    })();
+    
+    // Fit the About ASCII title (independent of wallpaper)
+    ;(function(){
+      try {
+        var titleEl = document.getElementById('about-ascii-title');
+        if (titleEl && window.asciiFit) {
+          window.asciiFit.apply(titleEl, {
+            colBuffer: Number(titleEl.dataset.colBuffer || 0),
+            rowBuffer: Number(titleEl.dataset.rowBuffer || 0),
+            container: titleEl.closest('.container') || document.body
+          });
+        }
       } catch(_) { /* noop */ }
     })();
   </script>
