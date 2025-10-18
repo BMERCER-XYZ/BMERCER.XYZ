@@ -255,8 +255,28 @@ __/\\\\\\\\\\\\\________________________________________________________________
       let playing = false;
       let framePosition = 1.0;
       let timer = null;
+      let asciiDimensions = { rows: 0, cols: 0 };
 
       function pathFor(i){ return `${FOLDER}/${String(i).padStart(PAD,'0')}${EXT}`; }
+
+      function computeDimensions(){
+        let maxRows = 0;
+        let maxCols = 0;
+        for(let i = 1; i <= RUN_FRAMES; i++){
+          const text = frames[i];
+          if(!text) continue;
+          const lines = text.split('\n');
+          if(lines.length > maxRows) maxRows = lines.length;
+          for(const rawLine of lines){
+            const line = rawLine.replace(/\r/g,'').replace(/\s+$/,'');
+            if(line.length > maxCols) maxCols = line.length;
+          }
+        }
+        return {
+          rows: Math.max(1, maxRows),
+          cols: Math.max(1, maxCols)
+        };
+      }
 
       async function preload(){
         const probeLimit = RUN_FRAMES; // initial guess or param
@@ -290,8 +310,15 @@ __/\\\\\\\\\\\\\________________________________________________________________
         } else {
           screenEl.textContent = frames[1];
         }
+        asciiDimensions = computeDimensions();
         if (window.asciiFit) {
-          window.__bgFit = window.asciiFit.apply(screenEl, { onResize: true });
+          window.__bgFit = window.asciiFit.apply(screenEl, {
+            onResize: true,
+            rows: asciiDimensions.rows,
+            cols: asciiDimensions.cols,
+            colBuffer: 0,
+            rowBuffer: 0
+          });
         }
         play();
       }
