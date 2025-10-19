@@ -140,20 +140,20 @@
       }
       .nav-buttons {
         grid-row: 3;
-        position: relative;
-        top: 100px;
-        left: unset;
-        right: unset;
-        bottom: unset;
+        position: fixed;
+  top: auto;
+        bottom: 320px;
+        left: 50%;
+  right: auto;
+        transform: translateX(-50%);
         display: grid;
-        gap: 60px;
-        grid-template-columns: 200px;
-        grid-template-rows: 60px 60px;
-        width: 100%;
-        max-width: 300px;
-        margin: 0 auto;
+        gap: 32px;
+        grid-template-columns: min(80vw, 260px);
+        grid-template-rows: repeat(2, 56px);
+        width: auto;
+        margin: 0;
         justify-content: center;
-        align-items: center;
+        align-items: stretch;
       }
       .nav-button {
         padding: 6px 12px;
