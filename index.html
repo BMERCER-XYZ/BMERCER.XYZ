@@ -345,12 +345,16 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
         const STAR_CHAR_SIZE = 6.5;
         const EDGE_SPREAD = 6;
         const EDGE_PADDING = 16;
+        const OCCLUSION_SCALE = .5;
+        const OCCLUSION_BUFFER = 0;
         let layout = null;
         let grid = [];
         let stars = [];
         let timer = null;
         let active = true;
         let charMetrics = { width: STAR_CHAR_SIZE, height: STAR_CHAR_SIZE };
+        let occlusionMask = null;
+        let occlusionObserver = null;
 
         function measureCharMetrics(){
           const probe = document.createElement('span');
@@ -377,6 +381,50 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
           const cols = Math.max(80, Math.ceil(width / Math.max(1, charMetrics.width)) + 2);
           const rows = Math.max(60, Math.ceil((height + EDGE_PADDING) / Math.max(1, charMetrics.height)) + 2);
           return { width, height, rows, cols };
+        }
+
+        function computeOcclusionMask(){
+          if (!layout) return null;
+          const target = document.getElementById('screen') || document.querySelector('.screen-wrap');
+          if (!target) return null;
+          const rect = target.getBoundingClientRect();
+          if (!rect.width || !rect.height) return null;
+          const charW = Math.max(1, charMetrics.width);
+          const charH = Math.max(1, charMetrics.height);
+          const colOffset = EDGE_PADDING / charW;
+          const rowOffset = EDGE_PADDING / charH;
+          const centerCol = colOffset + (rect.left + rect.width / 2) / charW;
+          const centerRow = rowOffset + (rect.top + rect.height / 2) / charH;
+          const radiusCol = Math.max(4, ((rect.width - OCCLUSION_BUFFER) / 2) / charW * OCCLUSION_SCALE);
+          const radiusRow = Math.max(4, ((rect.height - OCCLUSION_BUFFER) / 2) / charH * OCCLUSION_SCALE);
+          return { centerCol, centerRow, radiusCol, radiusRow };
+        }
+
+        function isOccluded(col, row){
+          if (!occlusionMask) return false;
+          const nx = (col - occlusionMask.centerCol) / Math.max(1, occlusionMask.radiusCol);
+          const ny = (row - occlusionMask.centerRow) / Math.max(1, occlusionMask.radiusRow);
+          return (nx * nx + ny * ny) <= 1;
+        }
+
+        function pushStarOut(star){
+          if (!layout || !occlusionMask) return;
+          const angle = Math.random() * Math.PI * 2;
+          const radius = Math.max(occlusionMask.radiusCol, occlusionMask.radiusRow) + 2;
+          star.x = Math.round(occlusionMask.centerCol + Math.cos(angle) * radius);
+          star.y = Math.round(occlusionMask.centerRow + Math.sin(angle) * radius);
+          star.x = Math.max(0, Math.min(layout.cols - 1, star.x));
+          star.y = Math.max(0, Math.min(layout.rows - 1, star.y));
+        }
+
+        function setupOcclusionObserver(){
+          const target = document.getElementById('screen');
+          if (!target || typeof ResizeObserver === 'undefined') return;
+          occlusionObserver = new ResizeObserver(() => {
+            occlusionMask = computeOcclusionMask();
+            render();
+          });
+          occlusionObserver.observe(target);
         }
 
         function rebuild(){
@@ -410,10 +458,15 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
               blink: Math.random()
             });
           }
+          occlusionMask = computeOcclusionMask();
+          if (!occlusionObserver) {
+            setupOcclusionObserver();
+          }
           render();
         }
 
         function render(){
+          if (!layout) return;
           for (let y = 0; y < layout.rows; y++){
             const row = grid[y];
             for (let x = 0; x < layout.cols; x++){
@@ -423,6 +476,7 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
           for (const star of stars){
             const sy = Math.max(0, Math.min(layout.rows - 1, star.y));
             const sx = Math.max(0, Math.min(layout.cols - 1, star.x));
+            if (isOccluded(sx, sy)) continue;
             grid[sy][sx] = BRIGHTNESS[star.phase];
           }
           const lines = grid.map(row => row.join('') + '\u00A0');
@@ -430,6 +484,7 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
         }
 
         function updateStars(){
+          if (!layout) return;
           for (const star of stars){
             const chance = 0.25 + star.blink * 0.35;
             if (Math.random() < chance){
@@ -438,6 +493,9 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
             if (Math.random() < 0.04){
               star.x = (star.x + (Math.random() < 0.5 ? -1 : 1) + layout.cols) % layout.cols;
               star.y = (star.y + (Math.random() < 0.5 ? -1 : 1) + layout.rows) % layout.rows;
+            }
+            if (isOccluded(star.x, star.y)) {
+              pushStarOut(star);
             }
           }
         }
@@ -468,6 +526,10 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
             }
             window.removeEventListener('resize', handleResize);
             starEl.textContent = '';
+            if (occlusionObserver) {
+              occlusionObserver.disconnect();
+              occlusionObserver = null;
+            }
           }
         };
       }
