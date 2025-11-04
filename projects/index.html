@@ -7,15 +7,56 @@
   <style>
     :root{
       color-scheme: dark;
-      --bg:#0b0b10;--fg:#eaeaea;--muted:#8a8f98;--accent:#ffffff;--card:#141518;--border:#26282d;
+      --bg:#0b0b10;--fg:#eaeaea;--muted:#8a8f98;--accent:#bd64f8;--card:#141518;--border:#26282d;
     }
-    html,body{height:100%; margin:0; background:var(--bg); color:var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; overflow-x: hidden;}
+    html,body{height:100%; margin:0; background:var(--bg); color:var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; overflow: hidden;}
     
-  .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
-    
-    .header { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+    body {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      position: fixed;
+      width: 100%;
+    }
 
-    /* ASCII title sizing keeps the vibe */
+    #mobile-starfield{
+      display:none;
+      position:fixed;
+      inset:0;
+      margin:0;
+      padding:0;
+      white-space:pre;
+      line-height:1;
+      tab-size:2;
+      text-align:left;
+      pointer-events:none;
+      color:var(--fg);
+      opacity:0.25;
+      font-family: inherit;
+      width:100vw;
+      height:100vh;
+      min-height:100vh;
+      letter-spacing:0;
+      font-size:6.5px;
+      overflow:hidden;
+      z-index:0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
     .ascii-title {
       --ascii-cols: 160;
       --ascii-container-w: min(100vw, 800px);
@@ -23,89 +64,116 @@
       --ascii-max-font: 10px;
       --title-scale: 1.7;
       font-size: min(calc(((var(--ascii-container-w) - var(--ascii-padding)) / var(--ascii-cols)) * var(--title-scale)), var(--ascii-max-font));
-      line-height: 0.9; white-space: pre; color: var(--fg); font-weight: bold; margin: 0 0 10px 0; display: inline-block; text-align: left;
+      line-height: 0.9;
+      white-space: pre;
+      color: var(--fg);
+      font-weight: bold;
+      margin: 0 0 10px 0;
+      display: inline-block;
+      text-align: left;
     }
 
-    .header p { font-size: 1rem; color: var(--muted); margin: 0; }
+    .header p {
+      font-size: 1rem;
+      color: var(--muted);
+      margin: 0;
+    }
 
-    .back-link { display: inline-block; margin-bottom: 30px; color: var(--accent); text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease; border: 1px solid var(--border); padding: 8px 16px; border-radius: 4px; }
-    .back-link:hover { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 30px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 4px;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
 
-    /* Background ASCII animation layer */
-    .bg-screen-wrap{
-      position: fixed;
-      inset: 0;
-      z-index: 0;
+    .back-link:hover {
+      color: var(--bg);
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .category-buttons {
       display: flex;
-      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
       justify-content: center;
-      pointer-events: none; /* allow clicking content */
-      opacity: 0.25; /* subtle */
-    }
-    pre#bg-screen{
-      margin:0;
-      padding:0; /* no padding so it can fit exactly to viewport */
-      white-space:pre;
-      line-height:1.05;
-      tab-size:2;
-      text-align:center;
-      display:inline-block;
-      vertical-align:middle;
-      /* dynamic sizing driven by ascii-fit.js */
-      --ascii-cols: 160; /* fallback */
-      --ascii-rows: 60;  /* fallback */
-      --ascii-container-w: 100vw;
-      --ascii-container-h: 100vh;
-      --screen-padding: 0px; /* exact fit to viewport */
-      --screen-max-font: 10px;
-      font-size: min(calc(((var(--ascii-container-w) - var(--screen-padding)) / var(--ascii-cols)) * var(--screen-scale, 1.7)), var(--screen-max-font));
     }
 
-    /* Column layout */
-    .project-columns { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start; }
-    @media (min-width: 980px) { .project-columns { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
-    .project-column { display: flex; flex-direction: column; gap: 16px; }
-    .column-title { margin: 0 0 6px 0; color: var(--muted); font-size: 0.95rem; letter-spacing: 0.02em; }
+    .category-btn {
+      background: var(--card);
+      border: 2px solid var(--border);
+      color: var(--fg);
+      padding: 30px 50px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 24px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      text-align: center;
+      min-width: 280px;
+    }
 
-    /* Project card */
-    .project-item { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 20px; transition: all 0.3s ease; position: relative; }
-    .project-item:hover { border-color: var(--accent); box-shadow: 0 0 20px rgba(189, 100, 248, 0.1); transform: translateX(5px); }
-    .project-item::before { content: ">"; position: absolute; left: -15px; top: 20px; color: var(--accent); font-weight: bold; }
+    .category-btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(189, 100, 248, 0.3);
+    }
 
-    .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
-    .project-title { color: var(--accent); margin: 0; font-size: 1.3rem; font-weight: 600; }
-    .project-status { background: var(--border); color: var(--muted); padding: 4px 8px; border-radius: 3px; font-size: 0.8rem; text-transform: uppercase; }
-    .project-status.active { background: var(--accent); color: var(--bg); }
-    .project-status.archived { background: var(--border); color: var(--muted); opacity: 0.7; }
-
-    .project-description { color: var(--muted); line-height: 1.6; margin: 0 0 15px 0; font-size: 0.95rem; }
-    .project-tech { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
-    .tech-tag { background: var(--bg); color: var(--accent); padding: 3px 8px; border-radius: 3px; font-size: 0.8rem; border: 1px solid var(--border); }
-
-    .project-links { display: flex; gap: 10px; flex-wrap: wrap; }
-    .project-link { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 6px 12px; border: 1px solid var(--accent); border-radius: 3px; transition: all 0.3s ease; text-transform: uppercase; font-weight: 500; }
-    .project-link:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 10px var(--accent); }
-
-    /* Remove underline from all text inside project-link-card */
-    .project-link-card, .project-link-card * { text-decoration: none !important; color: inherit; }
+    .category-btn:active {
+      transform: translateY(-2px);
+    }
 
     @media (max-width: 768px) {
-      .container { padding: 15px; }
-      .project-header { flex-direction: column; gap: 10px; }
-      .project-links { justify-content: center; }
+      .container {
+        padding: 15px;
+      }
+
+      .ascii-title {
+        --banner-cols: 125;
+        --banner-pad-x: 10px;
+        --banner-fudge: 2px;
+        font-size: calc((100vw - var(--banner-pad-x) - var(--banner-fudge)) / var(--banner-cols));
+      }
+
+      .category-buttons {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .category-btn {
+        min-width: 100%;
+        padding: 20px 30px;
+        font-size: 20px;
+      }
+
+      .back-link {
+        position: static;
+        margin-bottom: 20px;
+        display: inline-block;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Background ASCII animation -->
-  <div class="bg-screen-wrap" aria-hidden="true">
-    <pre id="bg-screen">Loading...</pre>
-  </div>
+  <pre id="mobile-starfield" aria-hidden="true"></pre>
+
   <div class="container">
     <a href="/" class="back-link">← Back to Home</a>
     
     <div class="header">
-<pre class="ascii-title" data-col-buffer="0">
+      <pre class="ascii-title" data-col-buffer="0">
 __/\\\\\\\\\\\\\__________________________________________________________________________________________________        
  _\/\\\/////////\\\___________________________________/\\\_________________________________________________________       
   _\/\\\_______\/\\\__________________________________\///___________________________________/\\\___________________      
@@ -116,249 +184,187 @@ __/\\\\\\\\\\\\\________________________________________________________________
        _\/\\\_____________\/\\\__________\///\\\\\/___\//\\\\\\___\//\\\\\\\\\\__\///\\\\\\\\____\//\\\\\____/\\\\\\\\\\_ 
         _\///______________\///_____________\/////______\//////_____\//////////_____\////////______\/////____\//////////__
       </pre>
-      <script src="ascii-fit.js"></script>
-      <p>// Some of my past and current projects</p>
+      <p>// Choose a project category</p>
     </div>
 
-    <!-- Three-column categorized lists -->
-    <div class="project-columns">
-      <!-- Webdev Column -->
-      <section class="project-column" aria-label="Web development projects">
-        <h2 class="column-title">// Webdev</h2>
-
-        <div class="project-item project-link-card">
-          <a href="/projects/poketracker.html" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
-            <div class="project-header">
-              <h3 class="project-title">PokeTracker</h3>
-              <span class="project-status archived">ARCHIVED</span>
-            </div>
-            <p class="project-description">Web application used to fetch and track Pokemon card prices.</p>
-            <div class="project-tech">
-              <span class="tech-tag">Python</span>
-              <span class="tech-tag">HTML</span>
-              <span class="tech-tag">CSS</span>
-            </div>
-          </a>
-          <div class="project-links">
-            <a href="https://github.com/BenDHS/Pokemon-Card-Tracker-v2" class="project-link">Code</a>
-            <a href="https://poketracker.xyz/" class="project-link">Webpage</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Programs / Scripts Column -->
-      <section class="project-column" aria-label="Programs and scripts">
-        <h2 class="column-title">// Programs / Scripts</h2>
-
-        <div class="project-item">
-          <div class="project-header">
-            <h3 class="project-title">PNG To ASCII Generator</h3>
-            <span class="project-status">ARCHIVED</span>
-          </div>
-          <p class="project-description">
-            Convert PNG images to ASCII art with customizable settings and output options.
-            With image preview hosted on GitHub Pages.
-          </p>
-          <div class="project-tech">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">HTML</span>
-            <span class="tech-tag">CSS</span>
-          </div>
-          <div class="project-links">
-            <a href="https://github.com/BMERCER-XYZ/ASCII_Generator" class="project-link">Code</a>
-            <a href="https://bmercer-xyz.github.io/ASCII_Generator/" class="project-link">Webpage</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Apps Column -->
-      <section class="project-column" aria-label="Apps">
-        <h2 class="column-title">// Apps</h2>
-
-        <div class="project-item project-link-card">
-          <a href="/projects/energy_tracker.html" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
-            <div class="project-header">
-              <h3 class="project-title">Simple Energy Tracker</h3>
-              <span class="project-status active">Active</span>
-            </div>
-            <p class="project-description">
-              IOS & WatchOS app to monitor and log caloric intake and energy expenditure. 
-              Syncs with HealthKit and provides daily/weekly insights.
-            </p>
-            <div class="project-tech">
-              <span class="tech-tag">IOS</span>
-              <span class="tech-tag">WatchOS</span>
-              <span class="tech-tag">Swift</span>
-            </div>
-          </a>
-          <div class="project-links">
-            <a class="project-link" href="https://apps.apple.com/au/app/simple-energy-tracker/id6751491337" target="_blank" rel="noopener noreferrer">App store</a>
-          </div>
-        </div>
-
-        <div class="project-item project-link-card">
-          <a href="/projects/savestack.html" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
-            <div class="project-header">
-              <h3 class="project-title">SaveStack</h3>
-              <span class="project-status active">Active</span>
-            </div>
-            <p class="project-description">
-              IOS application for budgeting and expense tracking.
-            </p>
-            </p>
-            <div class="project-tech">
-              <span class="tech-tag">IOS</span>
-              <span class="tech-tag">Swift</span>
-            </div>
-          </a>
-          <div class="project-links">
-            <a class="project-link" href="https://apps.apple.com/au/app/savestack/id6753587151" target="_blank" rel="noopener noreferrer">App store</a>
-          </div>
-        </div>
-
-        <div class="project-item project-link-card">
-          <a href="/projects/mototrack.html" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
-            <div class="project-header">
-              <h3 class="project-title">MotoTrack</h3>
-              <span class="project-status active">Active</span>
-            </div>
-            <p class="project-description">IOS app to manage motorcycle maintenance schedules with reminders and logging.</p>
-            <div class="project-tech">
-              <span class="tech-tag">IOS</span>
-              <span class="tech-tag">Swift</span>
-            </div>
-          </a>
-          <div class="project-links">
-            <a class="project-link" href="https://apps.apple.com/au/app/mototrack/id6752511221" target="_blank" rel="noopener noreferrer">App store</a>
-          </div>
-        </div>
-      </section>
+    <div class="category-buttons">
+      <a href="software/" class="category-btn">SOFTWARE ENGINEERING</a>
+      <a href="physical/" class="category-btn">PHYSICAL ENGINEERING</a>
     </div>
-    
-    <div class="coming-soon">More projects in development...</div>
   </div>
+
+  <script src="ascii-fit.js"></script>
   <script>
-    // Background ASCII animation (Projects page)
     (function(){
-      const TOTAL_FRAMES_PARAM = Number(new URLSearchParams(location.search).get('bg_frames') || 0);
-      const FPS = Number(new URLSearchParams(location.search).get('bg_fps') || 24);
-      const SPEED = Number(new URLSearchParams(location.search).get('bg_speed') || 1);
-      const FOLDER = 'Projects-ACII-Frames'; // relative to /projects/
-      const PAD = 4;
-      const EXT = '.txt';
+      const starEl = document.getElementById('mobile-starfield');
+      const mobileQuery = window.matchMedia('(max-width: 800px)');
+      let starCtrl = null;
 
-      const screenEl = document.getElementById('bg-screen');
+      function initStarfield(){
+        if (!starEl) return null;
 
-      // runtime frame count (detected or from param)
-      let RUN_FRAMES = TOTAL_FRAMES_PARAM > 0 ? TOTAL_FRAMES_PARAM : 300; // provisional default
-      let frames = [];
-      let playing = false;
-      let framePosition = 1.0;
-      let timer = null;
-      let asciiDimensions = { rows: 0, cols: 0 };
+        const BRIGHTNESS = ['.', '+', '*'];
+        const DENSITY = 0.12;
+        const STAR_CHAR_SIZE = 6.5;
+        const EDGE_SPREAD = 6;
+        const EDGE_PADDING = 16;
+        let layout = null;
+        let grid = [];
+        let stars = [];
+        let timer = null;
+        let active = true;
+        let charMetrics = { width: STAR_CHAR_SIZE, height: STAR_CHAR_SIZE };
 
-      function pathFor(i){ return `${FOLDER}/${String(i).padStart(PAD,'0')}${EXT}`; }
+        function measureCharMetrics(){
+          const probe = document.createElement('span');
+          probe.textContent = '0';
+          probe.style.position = 'absolute';
+          probe.style.visibility = 'hidden';
+          probe.style.whiteSpace = 'pre';
+          probe.style.fontFamily = window.getComputedStyle(starEl).fontFamily;
+          probe.style.fontSize = `${STAR_CHAR_SIZE}px`;
+          probe.style.lineHeight = '1';
+          probe.style.letterSpacing = '0';
+          document.body.appendChild(probe);
+          const rect = probe.getBoundingClientRect();
+          document.body.removeChild(probe);
+          return {
+            width: rect.width || STAR_CHAR_SIZE,
+            height: rect.height || STAR_CHAR_SIZE
+          };
+        }
 
-      function computeDimensions(){
-        let maxRows = 0;
-        let maxCols = 0;
-        for(let i = 1; i <= RUN_FRAMES; i++){
-          const text = frames[i];
-          if(!text) continue;
-          const lines = text.split('\n');
-          if(lines.length > maxRows) maxRows = lines.length;
-          for(const rawLine of lines){
-            const line = rawLine.replace(/\r/g,'').replace(/\s+$/,'');
-            if(line.length > maxCols) maxCols = line.length;
+        function computeLayout(){
+          const width = window.innerWidth + EDGE_PADDING * 2;
+          const height = window.innerHeight;
+          const cols = Math.max(80, Math.ceil(width / Math.max(1, charMetrics.width)) + 2);
+          const rows = Math.max(60, Math.ceil((height + EDGE_PADDING) / Math.max(1, charMetrics.height)) + 2);
+          return { width, height, rows, cols };
+        }
+
+        function rebuild(){
+          starEl.style.fontSize = `${STAR_CHAR_SIZE}px`;
+          starEl.style.lineHeight = '1';
+          starEl.style.letterSpacing = '0';
+          charMetrics = measureCharMetrics();
+          layout = computeLayout();
+          grid = Array.from({ length: layout.rows }, () => Array(layout.cols).fill(' '));
+          const starTotal = Math.floor(layout.rows * layout.cols * DENSITY);
+          stars = Array.from({ length: starTotal }, () => ({
+            x: Math.floor(Math.random() * layout.cols),
+            y: Math.floor(Math.random() * layout.rows),
+            phase: Math.floor(Math.random() * BRIGHTNESS.length),
+            blink: Math.random()
+          }));
+          const edgeWidth = Math.min(EDGE_SPREAD, Math.floor(layout.cols / 4));
+          for (let y = 0; y < layout.rows; y++) {
+            const leftX = Math.floor(Math.random() * edgeWidth);
+            const rightX = layout.cols - 1 - Math.floor(Math.random() * edgeWidth);
+            stars.push({
+              x: leftX,
+              y,
+              phase: Math.floor(Math.random() * BRIGHTNESS.length),
+              blink: Math.random()
+            });
+            stars.push({
+              x: Math.max(0, rightX),
+              y,
+              phase: Math.floor(Math.random() * BRIGHTNESS.length),
+              blink: Math.random()
+            });
+          }
+          render();
+        }
+
+        function render(){
+          if (!layout) return;
+          for (let y = 0; y < layout.rows; y++){
+            const row = grid[y];
+            for (let x = 0; x < layout.cols; x++){
+              row[x] = ' ';
+            }
+          }
+          for (const star of stars){
+            const sy = Math.max(0, Math.min(layout.rows - 1, star.y));
+            const sx = Math.max(0, Math.min(layout.cols - 1, star.x));
+            grid[sy][sx] = BRIGHTNESS[star.phase];
+          }
+          const lines = grid.map(row => row.join('') + '\u00A0');
+          starEl.textContent = lines.join('\n');
+        }
+
+        function updateStars(){
+          if (!layout) return;
+          for (const star of stars){
+            const chance = 0.25 + star.blink * 0.35;
+            if (Math.random() < chance){
+              star.phase = (star.phase + 1) % BRIGHTNESS.length;
+            }
+            if (Math.random() < 0.04){
+              star.x = (star.x + (Math.random() < 0.5 ? -1 : 1) + layout.cols) % layout.cols;
+              star.y = (star.y + (Math.random() < 0.5 ? -1 : 1) + layout.rows) % layout.rows;
+            }
           }
         }
+
+        function loop(){
+          if (!active) return;
+          updateStars();
+          render();
+          if (!active) return;
+          timer = setTimeout(loop, 180 + Math.random() * 220);
+        }
+
+        const handleResize = () => {
+          if (!active) return;
+          rebuild();
+        };
+
+        rebuild();
+        window.addEventListener('resize', handleResize, { passive: true });
+        loop();
+
         return {
-          rows: Math.max(1, maxRows),
-          cols: Math.max(1, maxCols)
+          stop(){
+            active = false;
+            if (timer) {
+              clearTimeout(timer);
+              timer = null;
+            }
+            window.removeEventListener('resize', handleResize);
+            starEl.textContent = '';
+          }
         };
       }
 
-      async function preload(){
-        const probeLimit = RUN_FRAMES; // initial guess or param
-        const ok = [];
-        const tasks = [];
-        frames.length = probeLimit + 1; // index from 1
-        for(let i=1;i<=probeLimit;i++){
-          tasks.push(
-            fetch(pathFor(i))
-              .then(r=>{ if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
-              .then(txt=>{ frames[i] = txt; ok[i] = true; })
-              .catch(()=>{ frames[i] = ''; ok[i] = false; })
-          );
+      function ensureStarfield(){
+        if (!starCtrl) {
+          starCtrl = initStarfield();
         }
-        await Promise.allSettled(tasks);
-        if (TOTAL_FRAMES_PARAM <= 0) {
-          // auto-detect last available frame
-          let last = 0;
-          for (let i = ok.length - 1; i >= 1; i--) {
-            if (ok[i]) { last = i; break; }
-          }
-          RUN_FRAMES = Math.max(1, last);
-          // shrink frames array to detected size
-          frames.length = RUN_FRAMES + 1;
+      }
+
+      function deactivateStarfield(){
+        if (starCtrl && typeof starCtrl.stop === 'function') {
+          starCtrl.stop();
+          starCtrl = null;
         }
-        // Ensure first frame exists
-        if (!frames[1]) {
-          // try to find first available frame
-          const firstIdx = frames.findIndex((v, idx) => idx > 0 && v && v.length);
-          screenEl.textContent = firstIdx > 0 ? frames[firstIdx] : '';
+      }
+
+      function applyMode(){
+        if (mobileQuery.matches) {
+          ensureStarfield();
         } else {
-          screenEl.textContent = frames[1];
+          deactivateStarfield();
         }
-        asciiDimensions = computeDimensions();
-        if (window.asciiFit) {
-          window.__bgFit = window.asciiFit.apply(screenEl, {
-            onResize: true,
-            rows: asciiDimensions.rows,
-            cols: asciiDimensions.cols,
-            colBuffer: 0,
-            rowBuffer: 0
-          });
-        }
-        play();
       }
 
-      function show(i){
-        const idx = Math.max(1, Math.min(RUN_FRAMES, Math.floor(i)));
-        framePosition = i;
-        screenEl.textContent = frames[idx] || '';
-        if (window.__bgFit && window.__bgFit.update) window.__bgFit.update();
+      applyMode();
+
+      if (typeof mobileQuery.addEventListener === 'function') {
+        mobileQuery.addEventListener('change', applyMode);
+      } else if (typeof mobileQuery.addListener === 'function') {
+        mobileQuery.addListener(applyMode);
       }
-
-      function step(){
-        let next = framePosition + SPEED;
-        if(next > RUN_FRAMES) next = 1;
-        show(next);
-      }
-
-      function play(){
-        if(playing) return; playing = true; startAnimation();
-      }
-
-      function startAnimation(){
-        const interval = 1000 / FPS;
-        let expected = performance.now() + interval;
-        function tick(){
-          if(!playing || document.hidden) return;
-          const now = performance.now();
-          const dt = now - expected;
-          if(dt >= 0){ step(); expected += interval; }
-          timer = setTimeout(tick, Math.max(0, interval - dt));
-        }
-        tick();
-      }
-
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) { if (timer) { clearTimeout(timer); timer = null; } }
-        else if (playing) { startAnimation(); }
-      });
-
-      preload();
     })();
   </script>
 </body>

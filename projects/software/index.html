@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projects - BMERCER.XYZ</title>
+  <style>
+    :root{
+      color-scheme: dark;
+      --bg:#0b0b10;--fg:#eaeaea;--muted:#8a8f98;--accent:#ffffff;--card:#141518;--border:#26282d;
+    }
+    html,body{height:100%; margin:0; background:var(--bg); color:var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; overflow-x: hidden;}
+    
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
+    
+
+
+    .back-link { display: inline-block; margin-bottom: 30px; color: var(--accent); text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease; border: 1px solid var(--border); padding: 8px 16px; border-radius: 4px; }
+    .back-link:hover { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+
+    /* Background video animation layer */
+    .bg-screen-wrap{
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none; /* allow clicking content */
+      background: var(--bg);
+      overflow: hidden;
+    }
+    video#bg-screen{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.3;
+    }
+
+    /* Column layout */
+    .project-columns { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start; }
+    @media (min-width: 980px) { .project-columns { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+    .project-column { display: flex; flex-direction: column; gap: 16px; }
+    .column-title { margin: 0 0 6px 0; color: var(--muted); font-size: 0.95rem; letter-spacing: 0.02em; }
+
+    /* Project card */
+    .project-item { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 20px; transition: all 0.3s ease; position: relative; }
+    .project-item:hover { border-color: var(--accent); box-shadow: 0 0 20px rgba(189, 100, 248, 0.1); transform: translateX(5px); }
+    .project-item::before { content: ">"; position: absolute; left: -15px; top: 20px; color: var(--accent); font-weight: bold; }
+
+    .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+    .project-title { color: var(--accent); margin: 0; font-size: 1.3rem; font-weight: 600; }
+    .project-status { background: var(--border); color: var(--muted); padding: 4px 8px; border-radius: 3px; font-size: 0.8rem; text-transform: uppercase; }
+    .project-status.active { background: var(--accent); color: var(--bg); }
+    .project-status.archived { background: var(--border); color: var(--muted); opacity: 0.7; }
+
+    .project-description { color: var(--muted); line-height: 1.6; margin: 0 0 15px 0; font-size: 0.95rem; }
+    .project-tech { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+    .tech-tag { background: var(--bg); color: var(--accent); padding: 3px 8px; border-radius: 3px; font-size: 0.8rem; border: 1px solid var(--border); }
+
+    .project-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .project-link { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 6px 12px; border: 1px solid var(--accent); border-radius: 3px; transition: all 0.3s ease; text-transform: uppercase; font-weight: 500; }
+    .project-link:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 10px var(--accent); }
+
+    /* Remove underline from all text inside project-link-card */
+    .project-link-card, .project-link-card * { text-decoration: none !important; color: inherit; }
+
+    @media (max-width: 768px) {
+      .container { padding: 15px; }
+      .project-header { flex-direction: column; gap: 10px; }
+      .project-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background video animation -->
+  <div class="bg-screen-wrap" aria-hidden="true">
+    <video id="bg-screen" autoplay muted loop playsinline></video>
+  </div>
+  <div class="container">
+    <a href="../" class="back-link">← Back to Projects</a>
+    
+    
+
+    <!-- Three-column categorized lists -->
+    <div class="project-columns">
+      <!-- Webdev Column -->
+      <section class="project-column" aria-label="Web development projects">
+        <h2 class="column-title">// Webdev</h2>
+
+        <div class="project-item project-link-card">
+          <a href="/projects/software/poketracker.html" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
+            <div class="project-header">
+              <h3 class="project-title">PokeTracker</h3>
+              <span class="project-status archived">ARCHIVED</span>
+            </div>
+            <p class="project-description">Web application used to fetch and track Pokemon card prices.</p>
+            <div class="project-tech">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">HTML</span>
+              <span class="tech-tag">CSS</span>
+            </div>
+          </a>
+          <div class="project-links">
+            <a href="https://github.com/BenDHS/Pokemon-Card-Tracker-v2" class="project-link">Code</a>
+            <a href="https://poketracker.xyz/" class="project-link">Webpage</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Programs / Scripts Column -->
+      <section class="project-column" aria-label="Programs and scripts">
+        <h2 class="column-title">// Programs / Scripts</h2>
+
+        <div class="project-item">
+          <div class="project-header">
+            <h3 class="project-title">PNG To ASCII Generator</h3>
+            <span class="project-status">ARCHIVED</span>
+          </div>
+          <p class="project-description">
+            Convert PNG images to ASCII art with customizable settings and output options.
+            With image preview hosted on GitHub Pages.
+          </p>
+          <div class="project-tech">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">HTML</span>
+            <span class="tech-tag">CSS</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/BMERCER-XYZ/ASCII_Generator" class="project-link">Code</a>
+            <a href="https://bmercer-xyz.github.io/ASCII_Generator/" class="project-link">Webpage</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Apps Column -->
+      <section class="project-column" aria-label="Apps">
+        <h2 class="column-title">// Apps</h2>
+
+        <div class="project-item project-link-card">
+          <a href="/projects/software/energy_tracker.html" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
+            <div class="project-header">
+              <h3 class="project-title">Simple Energy Tracker</h3>
+              <span class="project-status active">Active</span>
+            </div>
+            <p class="project-description">
+              IOS & WatchOS app to monitor and log caloric intake and energy expenditure. 
+              Syncs with HealthKit and provides daily/weekly insights.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">IOS</span>
+              <span class="tech-tag">WatchOS</span>
+              <span class="tech-tag">Swift</span>
+            </div>
+          </a>
+          <div class="project-links">
+            <a class="project-link" href="https://apps.apple.com/au/app/simple-energy-tracker/id6751491337" target="_blank" rel="noopener noreferrer">App store</a>
+          </div>
+        </div>
+
+        <div class="project-item project-link-card">
+          <a href="/projects/software/savestack.html" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
+            <div class="project-header">
+              <h3 class="project-title">SaveStack</h3>
+              <span class="project-status active">Active</span>
+            </div>
+            <p class="project-description">
+              IOS application for budgeting and expense tracking.
+            </p>
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">IOS</span>
+              <span class="tech-tag">Swift</span>
+            </div>
+          </a>
+          <div class="project-links">
+            <a class="project-link" href="https://apps.apple.com/au/app/savestack/id6753587151" target="_blank" rel="noopener noreferrer">App store</a>
+          </div>
+        </div>
+
+        <div class="project-item project-link-card">
+          <a href="/projects/software/mototrack.html" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
+            <div class="project-header">
+              <h3 class="project-title">MotoTrack</h3>
+              <span class="project-status active">Active</span>
+            </div>
+            <p class="project-description">IOS app to manage motorcycle maintenance schedules with reminders and logging.</p>
+            <div class="project-tech">
+              <span class="tech-tag">IOS</span>
+              <span class="tech-tag">Swift</span>
+            </div>
+          </a>
+          <div class="project-links">
+            <a class="project-link" href="https://apps.apple.com/au/app/mototrack/id6752511221" target="_blank" rel="noopener noreferrer">App store</a>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+  </div>
+  <script>
+    // Background video animation (Projects page)
+    (function(){
+      const videoEl = document.getElementById('bg-screen');
+      if (videoEl) {
+        videoEl.src = 'video.mp4';
+        videoEl.play().catch(err => console.warn('Video autoplay failed:', err));
+      }
+    })();
+  </script>
+</body>
+</html>
