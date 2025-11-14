@@ -59,7 +59,7 @@
     .back-link {
       display: inline-block;
       margin-bottom: 30px;
-      color: var(--accent);
+      color: var(--fg);
       text-decoration: none;
       font-size: 0.9rem;
       transition: all 0.3s ease;
@@ -73,8 +73,8 @@
 
     .back-link:hover {
       color: var(--bg);
-      background: var(--accent);
-      border-color: var(--accent);
+      background: var(--fg);
+      border-color: var(--card);
     }
 
     .category-buttons {
@@ -101,9 +101,9 @@
     }
 
     .category-btn:hover {
-      background: var(--accent);
+      background: var(--fg);
       color: var(--bg);
-      border-color: var(--accent);
+      border-color: var(--card);
       transform: translateY(-4px);
       box-shadow: 0 8px 20px rgba(189, 100, 248, 0.3);
     }
@@ -120,7 +120,7 @@
       }
 
       .ascii-title {
-        --banner-cols: 125;
+        --banner-cols: 80;
         --banner-pad-x: 10px;
         --banner-fudge: 2px;
         font-size: calc((100vw - var(--banner-pad-x) - var(--banner-fudge)) / var(--banner-cols));
@@ -143,9 +143,9 @@
       }
 
       .back-link {
-        position: static;
-        margin-bottom: 20px;
-        display: inline-block;
+        display: grid;
+        align-items: center;
+      
       }
     }
   </style>

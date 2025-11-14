@@ -135,7 +135,7 @@
         -webkit-overflow-scrolling: touch;
       }
       #banner {
-        display: grid;
+        display: block;
         grid-row: 1;
         padding: 10px 5px;
         padding-top: 50px;
@@ -151,39 +151,29 @@
         font-size: calc((100vw - var(--banner-pad-x) - var(--banner-fudge)) / var(--banner-cols));
       }
       .screen-wrap {
-        grid-row: 2;
-        display: grid;
-        justify-content: center;
-        align-items: start;
-        padding: 16px 0 0;
-        position: relative;  
+        display: none;
       }
       #mobile-starfield {
         display: block;
       }
       .nav-buttons {
         grid-row: 3;
-        position: relative;
-        top: auto;
-        bottom: auto;
-        left: auto;
-        right: auto;
-        transform: none;
-        display: grid;
-        gap: 24px;
-        grid-template-columns: min(80vw, 240px);
-        grid-template-rows: repeat(2, 56px);
-        width: auto;
-        margin: 8px auto 24px;
-        justify-content: center;
+        display: flex;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
         align-items: stretch;
+        padding: 0 15px;
+        box-sizing: border-box;
+        margin: 8px auto 24px;
       }
       .nav-button {
-        padding: 6px 12px;
+        width: 100%;
+        padding: 20px 30px;
         font-size: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        box-sizing: border-box;
       }
     }
     
@@ -224,8 +214,9 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
       const screenEl = document.getElementById('screen');
       const starEl = document.getElementById('mobile-starfield');
       const mobileQuery = window.matchMedia('(max-width: 800px)');
-      let starCtrl = null;
+    let starCtrl = null;
   let screenFitHandle = null;
+  let desktopCtrl = null;
 
       const params = new URLSearchParams(location.search);
       const DESKTOP_TOTAL_FRAMES = 300;
@@ -346,16 +337,12 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
         const STAR_CHAR_SIZE = 6.5;
         const EDGE_SPREAD = 6;
         const EDGE_PADDING = 16;
-        const OCCLUSION_SCALE = .5;
-        const OCCLUSION_BUFFER = 0;
-        let layout = null;
-        let grid = [];
-        let stars = [];
-        let timer = null;
-        let active = true;
-        let charMetrics = { width: STAR_CHAR_SIZE, height: STAR_CHAR_SIZE };
-        let occlusionMask = null;
-        let occlusionObserver = null;
+    let layout = null;
+    let grid = [];
+    let stars = [];
+    let timer = null;
+    let active = true;
+    let charMetrics = { width: STAR_CHAR_SIZE, height: STAR_CHAR_SIZE };
 
         function measureCharMetrics(){
           const probe = document.createElement('span');
@@ -384,49 +371,7 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
           return { width, height, rows, cols };
         }
 
-        function computeOcclusionMask(){
-          if (!layout) return null;
-          const target = document.getElementById('screen') || document.querySelector('.screen-wrap');
-          if (!target) return null;
-          const rect = target.getBoundingClientRect();
-          if (!rect.width || !rect.height) return null;
-          const charW = Math.max(1, charMetrics.width);
-          const charH = Math.max(1, charMetrics.height);
-          const colOffset = EDGE_PADDING / charW;
-          const rowOffset = EDGE_PADDING / charH;
-          const centerCol = colOffset + (rect.left + rect.width / 2) / charW;
-          const centerRow = rowOffset + (rect.top + rect.height / 2) / charH;
-          const radiusCol = Math.max(4, ((rect.width - OCCLUSION_BUFFER) / 2) / charW * OCCLUSION_SCALE);
-          const radiusRow = Math.max(4, ((rect.height - OCCLUSION_BUFFER) / 2) / charH * OCCLUSION_SCALE);
-          return { centerCol, centerRow, radiusCol, radiusRow };
-        }
-
-        function isOccluded(col, row){
-          if (!occlusionMask) return false;
-          const nx = (col - occlusionMask.centerCol) / Math.max(1, occlusionMask.radiusCol);
-          const ny = (row - occlusionMask.centerRow) / Math.max(1, occlusionMask.radiusRow);
-          return (nx * nx + ny * ny) <= 1;
-        }
-
-        function pushStarOut(star){
-          if (!layout || !occlusionMask) return;
-          const angle = Math.random() * Math.PI * 2;
-          const radius = Math.max(occlusionMask.radiusCol, occlusionMask.radiusRow) + 2;
-          star.x = Math.round(occlusionMask.centerCol + Math.cos(angle) * radius);
-          star.y = Math.round(occlusionMask.centerRow + Math.sin(angle) * radius);
-          star.x = Math.max(0, Math.min(layout.cols - 1, star.x));
-          star.y = Math.max(0, Math.min(layout.rows - 1, star.y));
-        }
-
-        function setupOcclusionObserver(){
-          const target = document.getElementById('screen');
-          if (!target || typeof ResizeObserver === 'undefined') return;
-          occlusionObserver = new ResizeObserver(() => {
-            occlusionMask = computeOcclusionMask();
-            render();
-          });
-          occlusionObserver.observe(target);
-        }
+        /* Occlusion/masking removed: stars are no longer masked for the ASCII art */
 
         function rebuild(){
           starEl.style.fontSize = `${STAR_CHAR_SIZE}px`;
@@ -459,10 +404,7 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
               blink: Math.random()
             });
           }
-          occlusionMask = computeOcclusionMask();
-          if (!occlusionObserver) {
-            setupOcclusionObserver();
-          }
+          // no occlusion masking
           render();
         }
 
@@ -474,12 +416,11 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
               row[x] = ' ';
             }
           }
-          for (const star of stars){
-            const sy = Math.max(0, Math.min(layout.rows - 1, star.y));
-            const sx = Math.max(0, Math.min(layout.cols - 1, star.x));
-            if (isOccluded(sx, sy)) continue;
-            grid[sy][sx] = BRIGHTNESS[star.phase];
-          }
+            for (const star of stars){
+              const sy = Math.max(0, Math.min(layout.rows - 1, star.y));
+              const sx = Math.max(0, Math.min(layout.cols - 1, star.x));
+              grid[sy][sx] = BRIGHTNESS[star.phase];
+            }
           const lines = grid.map(row => row.join('') + '\u00A0');
           starEl.textContent = lines.join('\n');
         }
@@ -494,9 +435,6 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
             if (Math.random() < 0.04){
               star.x = (star.x + (Math.random() < 0.5 ? -1 : 1) + layout.cols) % layout.cols;
               star.y = (star.y + (Math.random() < 0.5 ? -1 : 1) + layout.rows) % layout.rows;
-            }
-            if (isOccluded(star.x, star.y)) {
-              pushStarOut(star);
             }
           }
         }
@@ -527,10 +465,6 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
             }
             window.removeEventListener('resize', handleResize);
             starEl.textContent = '';
-            if (occlusionObserver) {
-              occlusionObserver.disconnect();
-              occlusionObserver = null;
-            }
           }
         };
       }
@@ -548,15 +482,31 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
         }
       }
 
-      function applyMode(){
-        if (mobileQuery.matches) {
-          ensureStarfield();
-        } else {
-          deactivateStarfield();
+      function ensureDesktop(){
+        if (!desktopCtrl) {
+          desktopCtrl = initDesktopAnimation();
         }
       }
 
-    initDesktopAnimation();
+      function deactivateDesktop(){
+        if (desktopCtrl && typeof desktopCtrl.stop === 'function') {
+          desktopCtrl.stop();
+          desktopCtrl = null;
+        }
+      }
+
+      function applyMode(){
+        if (mobileQuery.matches) {
+          // Mobile: enable starfield and disable desktop ASCII animation
+          ensureStarfield();
+          deactivateDesktop();
+        } else {
+          // Desktop: disable mobile starfield and enable desktop ASCII animation
+          deactivateStarfield();
+          ensureDesktop();
+        }
+      }
+
       applyMode();
 
       if (typeof mobileQuery.addEventListener === 'function') {
