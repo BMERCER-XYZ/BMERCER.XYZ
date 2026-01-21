@@ -98,28 +98,6 @@
       /* Estimate row height as 1ch*line-height; use width constraint primarily to avoid overflow */
       font-size: min(calc(((var(--ascii-container-w) - var(--screen-padding)) / var(--ascii-cols)) * var(--screen-scale, 1.7)), var(--screen-max-font));
     }
-    #mobile-starfield{
-      display:none;
-      position:fixed;
-      inset:0;
-      margin:0;
-      padding:0;
-      white-space:pre;
-      line-height:1;
-      tab-size:2;
-      text-align:left;
-      pointer-events:none;
-      color:var(--fg);
-      opacity:0.25;
-      font-family: inherit;
-      width:100vw;
-      height:100vh;
-      min-height:100vh;
-      letter-spacing:0;
-      font-size:6.5px;
-      overflow:hidden;
-      z-index:0;
-    }
     
     
     /* Scaling for mobile */
@@ -153,9 +131,6 @@
       .screen-wrap {
         display: none;
       }
-      #mobile-starfield {
-        display: block;
-      }
       .nav-buttons {
         grid-row: 2;
         display: flex;
@@ -165,7 +140,7 @@
         gap: 20px;
         width: 100%;
         align-items: stretch;
-        padding: 40px 30px;
+        padding: 0 15px;
         box-sizing: border-box;
         margin: 8px auto 24px;
       }
@@ -182,8 +157,6 @@
   </style>
 </head>
 <body>
-
-  <pre id="mobile-starfield" aria-hidden="true"></pre>
 
   <div id="banner">
   <pre class="ascii-title" data-col-buffer="0">
@@ -212,9 +185,7 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
   <script>
     (function(){
       const screenEl = document.getElementById('screen');
-      const starEl = document.getElementById('mobile-starfield');
       const mobileQuery = window.matchMedia('(max-width: 800px)');
-    let starCtrl = null;
   let screenFitHandle = null;
   let desktopCtrl = null;
 
@@ -329,159 +300,6 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
         };
       }
 
-      function initStarfield(){
-        if (!starEl) return null;
-
-        const BRIGHTNESS = ['.', '+', '*'];
-        const DENSITY = 0.12;
-        const STAR_CHAR_SIZE = 6.5;
-        const EDGE_SPREAD = 6;
-        const EDGE_PADDING = 16;
-    let layout = null;
-    let grid = [];
-    let stars = [];
-    let timer = null;
-    let active = true;
-    let charMetrics = { width: STAR_CHAR_SIZE, height: STAR_CHAR_SIZE };
-
-        function measureCharMetrics(){
-          const probe = document.createElement('span');
-          probe.textContent = '0';
-          probe.style.position = 'absolute';
-          probe.style.visibility = 'hidden';
-          probe.style.whiteSpace = 'pre';
-          probe.style.fontFamily = window.getComputedStyle(starEl).fontFamily;
-          probe.style.fontSize = `${STAR_CHAR_SIZE}px`;
-          probe.style.lineHeight = '1';
-          probe.style.letterSpacing = '0';
-          document.body.appendChild(probe);
-          const rect = probe.getBoundingClientRect();
-          document.body.removeChild(probe);
-          return {
-            width: rect.width || STAR_CHAR_SIZE,
-            height: rect.height || STAR_CHAR_SIZE
-          };
-        }
-
-        function computeLayout(){
-          const width = window.innerWidth + EDGE_PADDING * 2;
-          const height = window.innerHeight;
-          const cols = Math.max(80, Math.ceil(width / Math.max(1, charMetrics.width)) + 2);
-          const rows = Math.max(60, Math.ceil((height + EDGE_PADDING) / Math.max(1, charMetrics.height)) + 2);
-          return { width, height, rows, cols };
-        }
-
-        /* Occlusion/masking removed: stars are no longer masked for the ASCII art */
-
-        function rebuild(){
-          starEl.style.fontSize = `${STAR_CHAR_SIZE}px`;
-          starEl.style.lineHeight = '1';
-          starEl.style.letterSpacing = '0';
-          charMetrics = measureCharMetrics();
-          layout = computeLayout();
-          grid = Array.from({ length: layout.rows }, () => Array(layout.cols).fill(' '));
-          const starTotal = Math.floor(layout.rows * layout.cols * DENSITY);
-          stars = Array.from({ length: starTotal }, () => ({
-            x: Math.floor(Math.random() * layout.cols),
-            y: Math.floor(Math.random() * layout.rows),
-            phase: Math.floor(Math.random() * BRIGHTNESS.length),
-            blink: Math.random()
-          }));
-          const edgeWidth = Math.min(EDGE_SPREAD, Math.floor(layout.cols / 4));
-          for (let y = 0; y < layout.rows; y++) {
-            const leftX = Math.floor(Math.random() * edgeWidth);
-            const rightX = layout.cols - 1 - Math.floor(Math.random() * edgeWidth);
-            stars.push({
-              x: leftX,
-              y,
-              phase: Math.floor(Math.random() * BRIGHTNESS.length),
-              blink: Math.random()
-            });
-            stars.push({
-              x: Math.max(0, rightX),
-              y,
-              phase: Math.floor(Math.random() * BRIGHTNESS.length),
-              blink: Math.random()
-            });
-          }
-          // no occlusion masking
-          render();
-        }
-
-        function render(){
-          if (!layout) return;
-          for (let y = 0; y < layout.rows; y++){
-            const row = grid[y];
-            for (let x = 0; x < layout.cols; x++){
-              row[x] = ' ';
-            }
-          }
-            for (const star of stars){
-              const sy = Math.max(0, Math.min(layout.rows - 1, star.y));
-              const sx = Math.max(0, Math.min(layout.cols - 1, star.x));
-              grid[sy][sx] = BRIGHTNESS[star.phase];
-            }
-          const lines = grid.map(row => row.join('') + '\u00A0');
-          starEl.textContent = lines.join('\n');
-        }
-
-        function updateStars(){
-          if (!layout) return;
-          for (const star of stars){
-            const chance = 0.25 + star.blink * 0.35;
-            if (Math.random() < chance){
-              star.phase = (star.phase + 1) % BRIGHTNESS.length;
-            }
-            if (Math.random() < 0.04){
-              star.x = (star.x + (Math.random() < 0.5 ? -1 : 1) + layout.cols) % layout.cols;
-              star.y = (star.y + (Math.random() < 0.5 ? -1 : 1) + layout.rows) % layout.rows;
-            }
-          }
-        }
-
-        function loop(){
-          if (!active) return;
-          updateStars();
-          render();
-          if (!active) return;
-          timer = setTimeout(loop, 180 + Math.random() * 220);
-        }
-
-        const handleResize = () => {
-          if (!active) return;
-          rebuild();
-        };
-
-        rebuild();
-        window.addEventListener('resize', handleResize, { passive: true });
-        loop();
-
-        return {
-          stop(){
-            active = false;
-            if (timer) {
-              clearTimeout(timer);
-              timer = null;
-            }
-            window.removeEventListener('resize', handleResize);
-            starEl.textContent = '';
-          }
-        };
-      }
-
-      function ensureStarfield(){
-        if (!starCtrl) {
-          starCtrl = initStarfield();
-        }
-      }
-
-      function deactivateStarfield(){
-        if (starCtrl && typeof starCtrl.stop === 'function') {
-          starCtrl.stop();
-          starCtrl = null;
-        }
-      }
-
       function ensureDesktop(){
         if (!desktopCtrl) {
           desktopCtrl = initDesktopAnimation();
@@ -497,12 +315,10 @@ __/\\\\\\\\\\\\\____/\\\\____________/\\\\__/\\\\\\\\\\\\\\\____/\\\\\\\\\______
 
       function applyMode(){
         if (mobileQuery.matches) {
-          // Mobile: enable starfield and disable desktop ASCII animation
-          ensureStarfield();
+          // Mobile: disable desktop ASCII animation
           deactivateDesktop();
         } else {
-          // Desktop: disable mobile starfield and enable desktop ASCII animation
-          deactivateStarfield();
+          // Desktop: enable desktop ASCII animation
           ensureDesktop();
         }
       }
