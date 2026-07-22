@@ -3,198 +3,103 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Physical Engineering Projects - BMERCER.XYZ</title>
-  <style>
-    :root{
-      color-scheme: dark;
-      --bg:#0b0b10;--fg:#eaeaea;--muted:#8a8f98;--accent:#ffffff;--card:#141518;--border:#26282d;
-    }
-    html,body{height:100%; margin:0; background:var(--bg); color:var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; overflow-x: hidden;}
-    
-  .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
-    
-
-
-    .header p { font-size: 1rem; color: var(--muted); margin: 0; }
-
-    .back-link { display: inline-block; margin-bottom: 30px; color: var(--accent); text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease; border: 1px solid var(--border); padding: 8px 16px; border-radius: 4px; }
-    .back-link:hover { color: var(--bg); background: var(--accent); border-color: var(--accent); }
-
-    /* Background video animation layer */
-    .bg-screen-wrap{
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none; /* allow clicking content */
-      background: var(--bg);
-      overflow: hidden;
-    }
-    video#bg-screen{
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.3;
-    }
-
-    /* Column layout */
-    .project-columns { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start; }
-    @media (min-width: 980px) { .project-columns { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
-    .project-column { display: flex; flex-direction: column; gap: 16px; }
-    .column-title { margin: 0 0 6px 0; color: var(--muted); font-size: 0.95rem; letter-spacing: 0.02em; }
-
-    /* Project card */
-    .project-item { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 20px; transition: all 0.3s ease; position: relative; }
-    .project-item:hover { border-color: var(--accent); box-shadow: 0 0 20px rgba(189, 100, 248, 0.1); transform: translateX(5px); }
-    .project-item::before { content: ">"; position: absolute; left: -15px; top: 20px; color: var(--accent); font-weight: bold; }
-
-    .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
-    .project-title { color: var(--accent); margin: 0; font-size: 1.3rem; font-weight: 600; }
-    .project-status { background: var(--border); color: var(--muted); padding: 4px 8px; border-radius: 3px; font-size: 0.8rem; text-transform: uppercase; }
-    .project-status.active { background: var(--accent); color: var(--bg); }
-    .project-status.archived { background: var(--border); color: var(--muted); opacity: 0.7; }
-
-    .project-description { color: var(--muted); line-height: 1.6; margin: 0 0 15px 0; font-size: 0.95rem; }
-    .project-tech { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
-    .tech-tag { background: var(--bg); color: var(--accent); padding: 3px 8px; border-radius: 3px; font-size: 0.8rem; border: 1px solid var(--border); }
-
-    .project-links { display: flex; gap: 10px; flex-wrap: wrap; }
-    .project-link { color: var(--accent); text-decoration: none; font-size: 0.9rem; padding: 6px 12px; border: 1px solid var(--accent); border-radius: 3px; transition: all 0.3s ease; text-transform: uppercase; font-weight: 500; }
-    .project-link:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 10px var(--accent); }
-
-    /* Remove underline from all text inside project-link-card */
-    .project-link-card, .project-link-card * { text-decoration: none !important; color: inherit; }
-
-    .coming-soon { text-align: center; color: var(--muted); font-size: 1.2rem; margin-top: 60px; }
-
-    @media (max-width: 768px) {
-      .container { padding: 15px; }
-      .project-header { flex-direction: column; gap: 10px; }
-      .project-links { justify-content: center; }
-    }
-  </style>
+  <meta name="description" content="Physical engineering and fabrication projects by Ben Mercer." />
+  <title>Physical Projects — BMERCER.XYZ</title>
+  <link rel="stylesheet" href="../project-list.css" />
 </head>
 <body>
-  <!-- Background video animation -->
   <div class="bg-screen-wrap" aria-hidden="true">
-    <video id="bg-screen" autoplay muted loop playsinline></video>
+    <video id="bg-screen" src="video.mov" autoplay muted loop playsinline></video>
   </div>
-  <div class="container">
-    <a href="../" class="back-link">← Back to Projects</a>
-    
 
-    <!-- Categorized project columns -->
-    <div class="project-columns">
-      <section class="project-column" aria-label="Electronics projects">
-        <h2 class="column-title">// Electronics</h2>
+  <main class="page-shell">
+    <nav class="topbar" aria-label="Project navigation">
+      <a href="../" class="back-link">All projects</a>
+      <div class="view-switch">
+        <a href="../software/">Software</a>
+        <a href="./" class="current" aria-current="page">Physical</a>
+      </div>
+    </nav>
 
-        <div class="project-item project-link-card">
-          <a href="chess_clock/" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
-            <div class="project-header">
-              <h3 class="project-title">Chess Clock</h3>
-              <span class="project-status archived">Archived</span>
-            </div>
-            <p class="project-description">Raspberry pi powered chess clock with custom 3d printed enclosure.</p>
-            <div class="project-tech">
-              <span class="tech-tag">CAD</span>
-              <span class="tech-tag">MicroPython 🐍</span>
-            </div>
-          </a>
-          <div class="project-links">
-          </div>
-        </div>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Selected work / 02</p>
+        <h1>Physical <span>projects</span></h1>
+      </div>
+      <p class="hero-summary">Fabricated objects, workshop improvements and embedded builds. Designed, prototyped and made for use in the real world.</p>
+    </header>
 
-        <div class="project-item project-link-card">
-          <a href="useless_box/" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
-            <div class="project-header">
-              <h3 class="project-title">Useless Box</h3>
-              <span class="project-status archived">Archived</span>
-            </div>
-            <p class="project-description">Arduino powered useless box with custom 3d printed enclosure.</p>
-            <div class="project-tech">
-              <span class="tech-tag">CAD</span>
-              <span class="tech-tag">C++</span>
-            </div>
-          </a>
-          <div class="project-links">
-          </div>
-        </div>
-
-      </section>
-
-      <section class="project-column" aria-label="fabrication projects">
-        <h2 class="column-title">// Metal Fabrication</h2>
-
-        <div class="project-item project-link-card">
-          <a href="gear_rack/" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
-            <div class="project-header">
-              <h3 class="project-title">Gear Rack</h3>
-              <span class="project-status archived">Archived</span>
-            </div>
-            <p class="project-description">Custom fabricated motorcycle gear rack.</p>
-            <div class="project-tech">
-              <span class="tech-tag">CAD</span>
-              <span class="tech-tag">Welding</span>
-            </div>
-          </a>
-          <div class="project-links">
-          </div>
-        </div>
-
-        <div class="project-item project-link-card">
-          <a href="cnc_laptop_stand/" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
-            <div class="project-header">
-              <h3 class="project-title">CNC Laptop Stand</h3>
-              <span class="project-status archived">Archived</span>
-            </div>
-            <p class="project-description">Custom laptop stand for CNC router.</p>
-            <div class="project-tech">
-              <span class="tech-tag">CAD</span>
-              <span class="tech-tag">Welding</span>
-            </div>
-          </a>
-          <div class="project-links">
-          </div>
-        </div>
-
-      </section>
-
-      <!-- Untitled column (no visible heading) -->
-      <section class="project-column" aria-label="">
-        <h2 class="column-title">// Misc</h2>
-
-         <div class="project-item project-link-card">
-          <a href="cnc_drawer/" class="project-card-link" style="display:block;text-decoration:none;color:inherit;">
-            <div class="project-header">
-              <h3 class="project-title">CNC Drawer</h3>
-              <span class="project-status archived">Archived</span>
-            </div>
-            <p class="project-description">Custom drawer for CNC router station.</p>
-            <div class="project-tech">
-              <span class="tech-tag">CAD</span>
-              <span class="tech-tag">Welding</span>
-              <span class="tech-tag">Woodworking</span>
-            </div>
-          </a>
-          <div class="project-links">
-          </div>
-        </div>
-      </section>
+    <div class="index-heading" aria-hidden="true">
+      <span>Index</span><span>Project</span><span>Brief</span><span>Methods</span><span>Open</span>
     </div>
-  </div>
-  <script>
-    // Background video animation (Projects page)
-    (function(){
-      const videoEl = document.getElementById('bg-screen');
-      if (videoEl) {
-        videoEl.src = 'video.mov';
-        videoEl.play().catch(err => console.warn('Video autoplay failed:', err));
-      }
-    })();
-  </script>
+
+    <section class="project-group" aria-labelledby="electronics-heading">
+      <h2 class="group-title" id="electronics-heading">Electronics <span>02</span></h2>
+
+      <article class="project-row">
+        <span class="project-number">01.01</span>
+        <div>
+          <h3 class="project-name">Chess Clock</h3>
+          <span class="project-status">Archived</span>
+        </div>
+        <p class="project-description">A Raspberry Pi-powered chess clock housed in a custom-designed, 3D-printed enclosure.</p>
+        <ul class="project-tech" aria-label="Methods"><li>CAD</li><li>MicroPython</li><li>3D printing</li></ul>
+        <div class="project-actions"><a class="project-action internal" href="chess_clock/">View project</a></div>
+      </article>
+
+      <article class="project-row">
+        <span class="project-number">01.02</span>
+        <div>
+          <h3 class="project-name">Useless Box</h3>
+          <span class="project-status">Archived</span>
+        </div>
+        <p class="project-description">An Arduino-powered useless box with a custom mechanism and purpose-built 3D-printed enclosure.</p>
+        <ul class="project-tech" aria-label="Methods"><li>CAD</li><li>C++</li><li>3D printing</li></ul>
+        <div class="project-actions"><a class="project-action internal" href="useless_box/">View project</a></div>
+      </article>
+    </section>
+
+    <section class="project-group" aria-labelledby="fabrication-heading">
+      <h2 class="group-title" id="fabrication-heading">Metal fabrication <span>02</span></h2>
+
+      <article class="project-row">
+        <span class="project-number">02.01</span>
+        <div>
+          <h3 class="project-name">Gear Rack</h3>
+          <span class="project-status">Archived</span>
+        </div>
+        <p class="project-description">A custom-fabricated motorcycle gear rack designed around the available space and everyday riding kit.</p>
+        <ul class="project-tech" aria-label="Methods"><li>CAD</li><li>Welding</li></ul>
+        <div class="project-actions"><a class="project-action internal" href="gear_rack/">View project</a></div>
+      </article>
+
+      <article class="project-row">
+        <span class="project-number">02.02</span>
+        <div>
+          <h3 class="project-name">CNC Laptop Stand</h3>
+          <span class="project-status">Archived</span>
+        </div>
+        <p class="project-description">A custom laptop stand fabricated to keep the CNC router workstation clear, accessible and compact.</p>
+        <ul class="project-tech" aria-label="Methods"><li>CAD</li><li>Welding</li></ul>
+        <div class="project-actions"><a class="project-action internal" href="cnc_laptop_stand/">View project</a></div>
+      </article>
+    </section>
+
+    <section class="project-group" aria-labelledby="workshop-heading">
+      <h2 class="group-title" id="workshop-heading">Workshop <span>01</span></h2>
+      <article class="project-row">
+        <span class="project-number">03.01</span>
+        <div>
+          <h3 class="project-name">CNC Drawer</h3>
+          <span class="project-status">Archived</span>
+        </div>
+        <p class="project-description">A custom storage drawer built into the CNC router station for tooling and frequently used accessories.</p>
+        <ul class="project-tech" aria-label="Methods"><li>CAD</li><li>Welding</li><li>Woodworking</li></ul>
+        <div class="project-actions"><a class="project-action internal" href="cnc_drawer/">View project</a></div>
+      </article>
+    </section>
+
+    <footer class="page-footer"><span>BMERCER.XYZ / Project index</span><span>05 entries</span></footer>
+  </main>
 </body>
 </html>
